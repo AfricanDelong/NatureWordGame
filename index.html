@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#a7dcc3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Поиск слов: Природа</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky1:#a7dcc3; --sky2:#eaf6e6; --sky3:#cdebd6; --sky4:#f2f9dc; --sky5:#d8ecf7;
+  --leaf:#2f6b45; --leaf-dark:#1f4a30; --leaf-light:#6fae7a;
+  --bark:#7a5230; --sun:#f4b942; --card:#ffffffcc; --ink:#1e3325; --found:#4a9d5f;
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{height:100%;margin:0;overscroll-behavior:none;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Nunito',sans-serif; color:var(--ink);
+  background:linear-gradient(130deg,
+    var(--sky1) 0%, var(--sky3) 15%, var(--sky2) 30%,
+    var(--sky4) 45%, var(--sky5) 60%, var(--sky2) 75%,
+    var(--sky3) 90%, var(--sky1) 100%);
+  background-size:500% 500%;
+  background-attachment:fixed;
+  animation:bgFlow 18s ease-in-out infinite;
+  min-height:100dvh;
+  display:flex; flex-direction:column;
+  overflow-x:hidden;
+  position:relative;
+  touch-action:manipulation;
+  -webkit-user-select:none; user-select:none;
+  padding-left:var(--sal);
+  padding-right:var(--sar);
+}
+@keyframes bgFlow{
+  0%   {background-position:0% 50%;}
+  25%  {background-position:100% 30%;}
+  50%  {background-position:100% 70%;}
+  75%  {background-position:0% 60%;}
+  100% {background-position:0% 50%;}
+}
+
+/* ============================================================
+   ФОН ГЛАВНОГО МЕНЮ — НА ВЕСЬ ЭКРАН
+   ============================================================ */
+body.menu-active::before{
+  content:'';
+  position: fixed;
+  inset: 0;
+  background-image: var(--menu-bg-image, none);
+  background-size: var(--menu-bg-size, cover);
+  background-position: var(--menu-bg-pos, center);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: var(--menu-bg-opacity, 0.9);
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity .5s;
+}
+body.menu-active::after{
+  content:'';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,.3) 0%,
+    rgba(0,0,0,.15) 40%,
+    rgba(0,0,0,.05) 65%,
+    rgba(255,255,255,.55) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+body.no-menu-bg.menu-active::before,
+body.no-menu-bg.menu-active::after{
+  display: none;
+}
+
+.bg-decor{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+.blob{
+  position:absolute; border-radius:50%; filter:blur(40px); opacity:.55;
+  animation:blobFloat linear infinite, blobPulse ease-in-out infinite;
+  mix-blend-mode:screen;
+}
+.blob.b1{width:340px;height:340px;background:radial-gradient(circle,#ffd77a 0%,#ffd77a00 70%);top:-80px;left:-100px;animation-duration:38s,10s;}
+.blob.b2{width:420px;height:420px;background:radial-gradient(circle,#a8e6c1 0%,#a8e6c100 70%);top:30%;right:-150px;animation-duration:52s,13s;animation-delay:-6s,-3s;}
+.blob.b3{width:300px;height:300px;background:radial-gradient(circle,#bfe0f5 0%,#bfe0f500 70%);bottom:-120px;left:20%;animation-duration:44s,11s;animation-delay:-14s,-5s;}
+.blob.b4{width:360px;height:360px;background:radial-gradient(circle,#f7c9dd 0%,#f7c9dd00 70%);top:55%;left:-120px;animation-duration:60s,14s;animation-delay:-22s,-8s;}
+@keyframes blobFloat{
+  0%   {transform:translate(0,0) scale(1);}
+  33%  {transform:translate(60px,-40px) scale(1.08);}
+  66%  {transform:translate(-40px,50px) scale(0.95);}
+  100% {transform:translate(0,0) scale(1);}
+}
+@keyframes blobPulse{0%,100%{opacity:.45;}50%{opacity:.75;}}
+
+.light-ray{
+  position:absolute; top:-20%; width:120px; height:150%;
+  background:linear-gradient(180deg,rgba(255,255,220,.35) 0%,rgba(255,255,220,0) 70%);
+  transform:rotate(18deg); filter:blur(18px); opacity:.5;
+  animation:rayShine 9s ease-in-out infinite;
+}
+.light-ray.r1{left:8%; animation-delay:-2s;}
+.light-ray.r2{left:42%; animation-delay:-5s; width:80px; opacity:.35;}
+.light-ray.r3{left:74%; animation-delay:-7s; width:150px;}
+@keyframes rayShine{
+  0%,100%{opacity:.25; transform:rotate(18deg) translateY(0);}
+  50%    {opacity:.65; transform:rotate(18deg) translateY(30px);}
+}
+
+.particle{
+  position:absolute; border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #fffde8, #fffde855);
+  box-shadow:0 0 8px rgba(255,250,210,.9);
+  animation:particleRise linear infinite;
+  opacity:0;
+  will-change:transform,opacity;
+}
+@keyframes particleRise{
+  0%   {transform:translateY(20px) translateX(0) scale(.6); opacity:0;}
+  10%  {opacity:.9;}
+  50%  {transform:translateY(-40vh) translateX(30px) scale(1); opacity:.8;}
+  90%  {opacity:.4;}
+  100% {transform:translateY(-110vh) translateX(-20px) scale(.7); opacity:0;}
+}
+
+.leaf{
+  position:absolute; top:-40px;
+  width:14px; height:14px;
+  background:linear-gradient(135deg,#a4d17d,#6fae7a);
+  border-radius:0 100% 0 100%;
+  opacity:.55;
+  animation:leafFall linear infinite;
+  will-change:transform;
+}
+.leaf:nth-child(odd){background:linear-gradient(135deg,#f4c76a,#e8a94c);}
+@keyframes leafFall{
+  0%   {transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:0;}
+  10%  {opacity:.6;}
+  90%  {opacity:.5;}
+  100% {transform:translateY(110vh) translateX(60px) rotate(540deg); opacity:0;}
+}
+
+.sun-glow{
+  position:absolute; top:-120px; left:50%; transform:translateX(-50%);
+  width:600px; height:400px;
+  background:radial-gradient(ellipse at center, rgba(255,236,160,.55) 0%, rgba(255,236,160,0) 65%);
+  filter:blur(20px);
+  animation:sunBreath 12s ease-in-out infinite;
+}
+@keyframes sunBreath{
+  0%,100%{opacity:.5; transform:translateX(-50%) scale(1);}
+  50%    {opacity:.85; transform:translateX(-50%) scale(1.08);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  body{animation:none;}
+  .blob,.light-ray,.particle,.leaf,.sun-glow{animation:none !important; opacity:.3;}
+}
+
+h1,h2{font-family:'Comfortaa',cursive; color:var(--leaf-dark); margin:.2em 0; position:relative; z-index:1; text-align:center;}
+h2{font-size:clamp(0.65rem, 4vw, 1.5rem);}
+
+/* ============================================================
+   ЗАГОЛОВОК ИГРЫ В ГЛАВНОМ МЕНЮ
+   ============================================================
+   Крупный (примерно в 2 раза больше прежнего), белый,
+   с мягкой тенью, чтобы читался на любой картинке.
+   ============================================================ */
+#menu h1{
+  font-family:'Comfortaa',cursive;
+  font-weight:350;
+  font-size:clamp(1.6rem, 11vw, 2rem);   /* было ~1.4–2rem, стало вдвое больше */
+  letter-spacing:.03em;
+  line-height:1.08;
+  color:#ffffff;
+  margin:.3em 0 .5em;
+  text-align:center;
+  padding:0 .25em;
+  text-shadow:
+    0 2px 4px rgba(0,0,0,.55),
+    0 6px 22px rgba(0,0,0,.45),
+    0 0 30px rgba(255,255,255,.25);
+}
+
+#app{
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:14px;
+  padding-top:calc(14px + var(--sat));
+  padding-bottom:calc(14px + var(--sab));
+  position:relative; z-index:1;
+  width:100%; min-height:0; overflow:hidden;
+}
+.screen{
+  display:none; width:100%; max-width:520px;
+  flex-direction:column; align-items:center; gap:12px;
+  max-height:100%; overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:4px;
+}
+.screen.active{display:flex;}
+#game.screen.active{overflow:hidden; gap:8px;}
+
+#menu{
+  position:relative;
+  padding:24px 16px;
+}
+
+.btn{
+  font-family:'Comfortaa',cursive; font-size:1rem; font-weight:700; color:#fff;
+  background:linear-gradient(135deg,var(--leaf),var(--leaf-light));
+  border:none; border-radius:16px;
+  padding:15px 24px; width:100%; max-width:320px;
+  cursor:pointer; box-shadow:0 5px 0 var(--leaf-dark);
+  transition:transform .08s, box-shadow .08s;
+  min-height:52px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.btn:active{transform:translateY(3px); box-shadow:0 2px 0 var(--leaf-dark);}
+.btn.back{background:linear-gradient(135deg,var(--bark),#9c7248); box-shadow:0 5px 0 #4e3419; max-width:200px;}
+.btn.back:active{box-shadow:0 2px 0 #4e3419;}
+.btn.danger{background:linear-gradient(135deg,#b5503a,#c96b52); box-shadow:0 5px 0 #7a3424; max-width:260px; font-size:.92rem; min-height:46px; padding:10px 18px;}
+.btn.danger:active{box-shadow:0 2px 0 #7a3424;}
+
+.icon-btn{
+  background:var(--card);
+  border:2px solid var(--leaf-light);
+  border-radius:12px;
+  font-size:1.15rem;
+  min-width:44px; height:44px;
+  padding:0 10px;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .1s;
+  flex-shrink:0;
+}
+.icon-btn:active{transform:scale(.94);}
+
+.level-grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; width:100%;}
+.level-btn{
+  aspect-ratio:1; min-height:56px;
+  border-radius:14px; border:none;
+  font-family:'Comfortaa',cursive; font-weight:700;
+  font-size:1.15rem; color:#fff;
+  background:linear-gradient(135deg,var(--leaf-light),var(--leaf));
+  cursor:pointer; position:relative;
+  box-shadow:0 4px 0 var(--leaf-dark);
+  transition:transform .1s, box-shadow .1s, filter .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.level-btn:active:not(.locked){transform:translateY(3px); box-shadow:0 1px 0 var(--leaf-dark);}
+.level-btn.done::after{
+  content:'🌟'; position:absolute; top:-8px; right:-6px; font-size:1rem;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+  animation:starPop .5s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes starPop{
+  0%{transform:scale(0) rotate(-90deg); opacity:0;}
+  100%{transform:scale(1) rotate(0); opacity:1;}
+}
+.level-btn.locked{
+  background:linear-gradient(135deg,#b5bfb5,#8b988b);
+  box-shadow:0 4px 0 #6a756a;
+  cursor:not-allowed; color:#f0f4f0;
+}
+.level-btn.locked::after{
+  content:'🔒'; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%); font-size:1.25rem;
+  filter:grayscale(.4) drop-shadow(0 2px 3px rgba(0,0,0,.25));
+}
+.level-btn.locked .num{opacity:.25;}
+.level-btn .num{position:relative; z-index:1;}
+.level-btn.available{animation:availablePulse 2.4s ease-in-out infinite;}
+@keyframes availablePulse{
+  0%,100%{box-shadow:0 4px 0 var(--leaf-dark), 0 0 0 0 rgba(111,174,122,.6);}
+  50%    {box-shadow:0 4px 0 var(--leaf-dark), 0 0 0 10px rgba(111,174,122,0);}
+}
+
+.progress-banner{
+  width:100%; background:var(--card); border-radius:14px;
+  padding:10px 14px;
+  display:flex; align-items:center; gap:10px;
+  font-weight:700; color:var(--leaf-dark); font-size:.9rem;
+}
+.progress-banner .bar{flex:1; height:10px; border-radius:10px; background:#d6e8da; overflow:hidden;}
+.progress-banner .bar > i{
+  display:block; height:100%;
+  background:linear-gradient(90deg,var(--leaf-light),var(--leaf));
+  transition:width .4s ease; border-radius:10px;
+}
+.progress-banner .lbl{white-space:nowrap;}
+
+.toggle-row{
+  display:flex; align-items:center; justify-content:space-between;
+  width:100%; max-width:320px;
+  background:var(--card); padding:10px 16px; border-radius:14px;
+  min-height:52px; font-weight:600;
+}
+.toggle{
+  border:none; background:var(--leaf); color:#fff;
+  border-radius:10px; padding:8px 16px; font-size:1rem;
+  cursor:pointer; min-width:74px; min-height:38px;
+  font-family:'Comfortaa',cursive; font-weight:700;
+}
+.toggle:active{filter:brightness(.92);}
+
+.game-header{
+  display:flex; justify-content:space-between; align-items:center;
+  width:100%; gap:8px; flex-shrink:0;
+}
+.header-toggles{display:flex; gap:6px;}
+#levelTitle{
+  font-family:'Comfortaa',cursive; font-weight:700;
+  color:var(--leaf-dark); font-size:1rem;
+  white-space:nowrap; flex:1; text-align:center;
+}
+
+.grid-wrap{
+  flex:1;
+  display:flex; align-items:center; justify-content:center;
+  width:100%; min-height:0; position:relative;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(10, 1fr);
+  grid-template-rows:repeat(10, 1fr);
+  gap:2px;
+  width:min(100%, calc(100dvh - 240px));
+  height:min(100%, calc(100dvh - 240px));
+  max-width:460px;
+  max-height:min(460px, calc(100dvh - 240px));
+  aspect-ratio:1;
+  background:var(--card);
+  padding:6px; border-radius:14px;
+  touch-action:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+  backdrop-filter:blur(6px);
+  box-shadow:0 10px 30px rgba(31,74,48,.12);
+  margin:0 auto;
+}
+.cell{
+  display:flex; align-items:center; justify-content:center;
+  border-radius:5px; background:#eef8ef;
+  font-weight:800;
+  font-size:clamp(10px, 2.6vw, 16px);
+  color:var(--leaf-dark);
+  cursor:pointer;
+  transition:background .15s, color .15s, transform .1s;
+  touch-action:none;
+  -webkit-user-select:none; user-select:none;
+  min-width:0; min-height:0; line-height:1;
+}
+.cell.selecting{background:var(--sun); color:#fff; transform:scale(1.08);}
+.cell.found{background:var(--found); color:#fff;}
+@keyframes hintGlow{0%,100%{background:var(--sun);}50%{background:#fff3c4;}}
+.cell.hint{animation:hintGlow .35s ease-in-out 4;}
+
+.word-list{
+  display:flex; flex-wrap:wrap; gap:6px; justify-content:center;
+  width:100%; max-width:460px;
+  flex-shrink:0; max-height:80px; overflow-y:auto;
+  padding:2px 0;
+}
+.word-chip{
+  background:var(--card); padding:5px 10px; border-radius:9px;
+  font-weight:700; letter-spacing:1.5px;
+  color:var(--leaf-light);
+  font-size:clamp(11px, 2.6vw, 14px);
+  transition:background .25s, color .25s;
+}
+.word-chip.found{letter-spacing:normal; background:var(--found); color:#fff;}
+
+.icon-btn.hint-btn{position:relative;}
+.hint-badge{
+  position:absolute; top:-6px; right:-6px;
+  background:var(--sun); color:#3a2a06;
+  font-size:.62rem; font-weight:800;
+  border-radius:50%; width:18px; height:18px;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff;
+}
+.icon-btn:disabled{opacity:.4; cursor:default;}
+
+.toast{
+  position:fixed; top:14%; left:50%;
+  transform:translate(-50%,-20px);
+  background:var(--sun); color:#3a2a06;
+  font-family:'Comfortaa',cursive; font-weight:700;
+  padding:10px 20px; border-radius:14px;
+  opacity:0; transition:all .35s;
+  pointer-events:none; z-index:20;
+  font-size:1rem; text-align:center; max-width:85vw;
+  box-shadow:0 6px 20px rgba(0,0,0,.15);
+}
+.toast.show{opacity:1; transform:translate(-50%,0);}
+.toast.locked{background:#8b988b; color:#fff;}
+
+.overlay{
+  position:fixed; inset:0; background:#1f4a30cc;
+  display:none; align-items:center; justify-content:center;
+  z-index:30; backdrop-filter:blur(4px); padding:20px;
+}
+.overlay.show{display:flex;}
+.overlay .box{
+  background:#fff; border-radius:18px; padding:24px 20px;
+  text-align:center; max-width:340px; width:100%;
+  display:flex; flex-direction:column; gap:10px;
+  animation:popIn .35s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes popIn{
+  0%{transform:scale(.85); opacity:0;}
+  100%{transform:scale(1); opacity:1;}
+}
+.overlay .box h2{font-size:1.3rem;}
+
+#shutdown{
+  position:fixed; inset:0; z-index:9999;
+  display:none;
+  flex-direction:column; align-items:center; justify-content:center;
+  gap:18px; padding:24px; text-align:center;
+  background:linear-gradient(160deg,#2f6b45 0%,#1f4a30 100%);
+  color:#f5f1e3;
+  font-family:'Comfortaa',cursive;
+  animation:fadeIn .4s ease;
+}
+#shutdown.show{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+#shutdown .ico{font-size:3.4rem; filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));}
+#shutdown h1{
+  font-weight:700; letter-spacing:.18em; margin:0;
+  color:#f5f1e3; font-size:clamp(1.2rem, 4.5vw, 1.7rem);
+  text-shadow:0 2px 10px rgba(0,0,0,.35);
+}
+#shutdown p{
+  opacity:.82; letter-spacing:.08em; margin:0; max-width:320px;
+  font-family:'Nunito',sans-serif; font-weight:600;
+  font-size:.95rem; line-height:1.5;
+}
+#shutdown button{
+  margin-top:8px; padding:14px 30px; border:none; border-radius:14px;
+  background:#f4b942; color:#3a2a06; font-weight:700; font-size:1rem;
+  font-family:'Comfortaa',cursive; letter-spacing:.1em; cursor:pointer;
+  box-shadow:0 5px 0 #b8892a;
+  transition:transform .08s, box-shadow .08s;
+}
+#shutdown button:active{transform:translateY(3px); box-shadow:0 2px 0 #b8892a;}
+
+@media (max-width: 380px){
+  #app{padding:10px; padding-top:calc(10px + var(--sat)); padding-bottom:calc(10px + var(--sab));}
+  .btn{font-size:.92rem; padding:13px 20px; min-height:48px;}
+  .icon-btn{min-width:40px; height:40px; font-size:1.05rem;}
+  .level-btn{min-height:48px; font-size:1rem;}
+  .level-grid{gap:6px;}
+  #levelTitle{font-size:.9rem;}
+  .grid{width:min(100%, calc(100dvh - 210px)); height:min(100%, calc(100dvh - 210px)); padding:5px; gap:2px;}
+  .cell{font-size:clamp(9px, 3vw, 14px); border-radius:4px;}
+  .toast{font-size:.9rem; padding:8px 16px;}
+  .hint-badge{width:16px; height:16px; font-size:.55rem;}
+  #menu h1{font-size:clamp(2.1rem, 10vw, 3rem);}
+}
+
+@media (orientation: landscape) and (max-height: 520px){
+  #app{padding:8px; padding-top:calc(8px + var(--sat)); padding-bottom:calc(8px + var(--sab));}
+  #game.screen.active{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "header header"
+      "grid words";
+    gap:8px 14px;
+    align-items:start;
+    overflow:auto;
+  }
+  #game .game-header{grid-area:header;}
+  #game .grid-wrap{grid-area:grid;}
+  #game .word-list{grid-area:words; max-height:none; align-self:start; justify-content:flex-start; max-width:100%;}
+  .grid{width:min(100%, calc(100dvh - 90px)); height:min(100%, calc(100dvh - 90px)); max-height:none;}
+  h2{font-size:1.3rem;}
+  #menu h1{font-size:2rem; margin:.2em 0;}
+  .btn{padding:12px 18px; min-height:44px; font-size:.92rem;}
+}
+
+@media (min-height: 800px) and (orientation: portrait){
+  .grid{width:min(100%, 480px); height:min(100%, 480px);}
+}
+
+@supports (-webkit-touch-callout: none){
+  body{position:fixed; width:100%;}
+  #app{position:relative;}
+}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --sky1:#0a1c11; --sky2:#122b1a; --sky3:#173724; --sky4:#0f3d24; --sky5:#0b2a30;
+    --card:#1e3a28cc; --ink:#eafaf0;
+  }
+  body{
+    background:linear-gradient(130deg,
+      var(--sky1) 0%, var(--sky3) 15%, var(--sky2) 30%,
+      var(--sky4) 45%, var(--sky5) 60%, var(--sky2) 75%,
+      var(--sky3) 90%, var(--sky1) 100%);
+    background-size:500% 500%;
+    background-attachment:fixed;
+    animation:bgFlow 18s ease-in-out infinite;
+  }
+  .cell{background:#264a32; color:#eafaf0;}
+  .blob{opacity:.35;}
+  .sun-glow{opacity:.25;}
+  .overlay .box{background:#1e3a28; color:#eafaf0;}
+  .progress-banner .bar{background:#264a32;}
+  .hint-badge{border-color:#1e3a28;}
+  body.menu-active::after{
+    background:linear-gradient(180deg,
+      rgba(0,0,0,.15) 0%,
+      rgba(0,0,0,.35) 45%,
+      rgba(0,0,0,.6) 100%) !important;
+  }
+  #menu h1{
+    text-shadow:
+      0 2px 4px rgba(0,0,0,.75),
+      0 6px 22px rgba(0,0,0,.55),
+      0 0 30px rgba(200,255,220,.25);
+  }
+}
+</style>
+</head>
+<body class="menu-active">
+
+<div class="bg-decor" aria-hidden="true">
+  <div class="sun-glow"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <div class="light-ray r1"></div>
+  <div class="light-ray r2"></div>
+  <div class="light-ray r3"></div>
+</div>
+
+<div id="app">
+
+<div class="screen active" id="menu">
+  <h1>🌿 Поиск слов: Природа</h1>
+  <button class="btn" id="btnPlay">▶ Играть</button>
+  <button class="btn" id="btnLevels">📋 Уровни</button>
+  <button class="btn" id="btnSettings">⚙ Настройки</button>
+  <button class="btn" id="btnExit">✕ Выход</button>
+</div>
+
+<div class="screen" id="levels">
+  <h2>Выберите уровень</h2>
+  <div class="progress-banner">
+    <span class="lbl" id="progressLbl">0 / 10</span>
+    <div class="bar"><i id="progressBar" style="width:0%"></i></div>
+  </div>
+  <div class="level-grid" id="levelGrid"></div>
+  <button class="btn back" id="backFromLevels">← Назад</button>
+</div>
+
+<div class="screen" id="settings">
+  <h2>Настройки</h2>
+  <div class="toggle-row"><span>🎵 Музыка</span><button id="musicToggle" class="toggle">Вкл</button></div>
+  <div class="toggle-row"><span>🔔 Звуки</span><button id="soundToggle" class="toggle">Вкл</button></div>
+  <button class="btn danger" id="btnReset">🗑 Сбросить прогресс</button>
+  <button class="btn back" id="backFromSettings">← Назад</button>
+</div>
+
+<div class="screen" id="game">
+  <div class="game-header">
+    <button class="icon-btn" id="btnBackGame" aria-label="Назад">←</button>
+    <span id="levelTitle">Уровень 1</span>
+    <div class="header-toggles">
+      <button class="icon-btn hint-btn" id="btnHint" aria-label="Подсказка">💡<span class="hint-badge" id="hintBadge">3</span></button>
+      <button class="icon-btn" id="musicToggleGame" aria-label="Музыка">🔊</button>
+      <button class="icon-btn" id="soundToggleGame" aria-label="Звуки">🔔</button>
+    </div>
+  </div>
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+  <div class="word-list" id="wordList"></div>
+</div>
+
+</div>
+<div class="toast" id="toast"></div>
+<div class="overlay" id="overlay"><div class="box">
+  <h2 id="ovTitle">Уровень пройден!</h2>
+  <p id="overlayText" style="margin:0;"></p>
+  <button class="btn" id="btnNextLevel">Следующий уровень</button>
+  <button class="btn back" id="btnToLevels">К уровням</button>
+</div></div>
+
+<div id="shutdown">
+  <div class="ico">🌿</div>
+  <h1>Игра завершена</h1>
+  <p>Прогресс сохранён. Вкладку можно закрыть.</p>
+  <button id="btnReopen">Вернуться в игру</button>
+</div>
+
+<script>
+/* ============================================================
+   🎨 ТВОИ ФАЙЛЫ И НАСТРОЙКИ
+   ============================================================ */
+const ASSETS = {
+  theme: 'theme.mp3',
+  themeStart: 3,
+  menuBg: 'menu-bg.jpg',
+  menuBgScale: 'cover',
+  menuBgPos: 'center',
+  menuBgOpacity: 0.9
+};
+
+/* ============================================================
+   СОХРАНЕНИЕ ПРОГРЕССА
+   ============================================================ */
+const STORAGE_KEY = 'wordSearchNature_v1';
+const TOTAL_HINTS = 3;
+
+let completed = new Set();
+let hintsLeft = TOTAL_HINTS;
+let musicOn = true;
+let soundOn = true;
+
+function loadProgress(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    if(Array.isArray(data.completed)){
+      completed = new Set(
+        data.completed.filter(n => Number.isInteger(n) && n >= 1 && n <= TOTAL_LEVELS)
+      );
+    }
+    if(typeof data.hintsLeft === 'number'){
+      hintsLeft = Math.max(0, Math.min(TOTAL_HINTS, data.hintsLeft));
+    }
+    if(typeof data.musicOn === 'boolean') musicOn = data.musicOn;
+    if(typeof data.soundOn === 'boolean') soundOn = data.soundOn;
+  } catch(e){
+    console.warn('Не удалось загрузить прогресс:', e);
+  }
+}
+function saveProgress(){
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      completed: [...completed].sort((a,b)=>a-b),
+      hintsLeft, musicOn, soundOn, savedAt: Date.now()
+    }));
+  } catch(e){
+    console.warn('Не удалось сохранить прогресс:', e);
+  }
+}
+function resetProgress(){
+  if(!confirm('Сбросить весь прогресс и настройки?')) return;
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  completed = new Set();
+  hintsLeft = TOTAL_HINTS;
+  musicOn = true; soundOn = true;
+  updateToggleUI(); updateHintUI(); buildLevelGrid();
+  showToast('Прогресс сброшен');
+}
+
+/* ============================================================
+   🖼 СВОЯ КАРТИНКА МЕНЮ
+   ============================================================ */
+(function applyMenuBackground(){
+  if (!ASSETS.menuBg) { document.body.classList.add('no-menu-bg'); return; }
+  const img = new Image();
+  img.onload = () => {
+    document.body.style.setProperty('--menu-bg-image', `url("${ASSETS.menuBg}")`);
+    document.body.style.setProperty('--menu-bg-size', ASSETS.menuBgScale || 'cover');
+    document.body.style.setProperty('--menu-bg-pos',  ASSETS.menuBgPos  || 'center');
+    document.body.style.setProperty('--menu-bg-opacity',
+      String(typeof ASSETS.menuBgOpacity === 'number' ? ASSETS.menuBgOpacity : 0.9));
+  };
+  img.onerror = () => {
+    console.info('Картинка меню не найдена:', ASSETS.menuBg, '— использую градиент.');
+    document.body.classList.add('no-menu-bg');
+  };
+  img.src = ASSETS.menuBg;
+})();
+
+/* ============================================================
+   ДЕКОР
+   ============================================================ */
+(function spawnDecor(){
+  const layer = document.querySelector('.bg-decor');
+  if (!layer) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = matchMedia('(max-width: 600px)').matches;
+
+  const partCount = reduced ? 6 : (isMobile ? 16 : 26);
+  for (let i = 0; i < partCount; i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 3 + Math.random() * 6;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (70 + Math.random() * 40) + '%';
+    p.style.animationDuration = (14 + Math.random() * 18) + 's';
+    p.style.animationDelay = (-Math.random() * 30) + 's';
+    layer.appendChild(p);
+  }
+
+  const leafCount = reduced ? 2 : (isMobile ? 5 : 8);
+  for (let i = 0; i < leafCount; i++){
+    const l = document.createElement('div');
+    l.className = 'leaf';
+    const size = 10 + Math.random() * 10;
+    l.style.width = size + 'px';
+    l.style.height = size + 'px';
+    l.style.left = Math.random() * 100 + '%';
+    l.style.animationDuration = (16 + Math.random() * 20) + 's';
+    l.style.animationDelay = (-Math.random() * 30) + 's';
+    l.style.opacity = 0.35 + Math.random() * 0.35;
+    layer.appendChild(l);
+  }
+})();
+
+const WORDS=['ЛЕС','РЕКА','ГОРЫ','ОБЛАКО','СОЛНЦЕ','ДЕРЕВО','ЦВЕТОК','ТРАВА','ЛИСТ','ОЗЕРО','ВЕТЕР','ДОЖДЬ','ПТИЦА','РОСА','ЗАКАТ','ПОЛЕ','ОКЕАН','СНЕГ','ЛУНА','ЗВЕЗДА','КАМЕНЬ','ПЕСОК','ОСТРОВ','РАДУГА','ВОЛНА','ГРИБ','ЯГОДА','КОРА','ВЕТКА','РУЧЕЙ'];
+const PRAISE=['Великолепно!','Чудесно!','Отлично!','Прекрасно!','Ты молодец!','Восхитительно!','Замечательно!','Супер!'];
+const ALPHA='АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ';
+const TOTAL_LEVELS=10;
+
+let actx,musicGain,sfxGain,musicNodes=[],birdTimer;
+let customAudioEl = null;
+let curLevel=1, curWords=[], curGrid=[], cellEls=[], dragging=false, startCell=null, curPath=[];
+let pointerId = null;
+let gameShutdown = false;
+
+function show(id){
+  if (gameShutdown) return;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.body.classList.toggle('menu-active', id === 'menu');
+}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+function isLevelUnlocked(n){ if (n === 1) return true; return completed.has(n - 1); }
+function nextPlayableLevel(){ for(let i=1;i<=TOTAL_LEVELS;i++){ if(!completed.has(i)) return i; } return null; }
+
+function buildLevelGrid(){
+  const wrap=document.getElementById('levelGrid'); wrap.innerHTML='';
+  for(let i=1;i<=TOTAL_LEVELS;i++){
+    const isDone = completed.has(i);
+    const unlocked = isLevelUnlocked(i);
+    const b=document.createElement('button');
+    b.textContent='';
+    const num = document.createElement('span');
+    num.className = 'num'; num.textContent = i;
+    b.appendChild(num);
+    if (isDone) {
+      b.className = 'level-btn done'; b.title = 'Уровень ' + i + ' — пройден';
+      b.onclick = () => { startLevel(i); };
+    } else if (unlocked) {
+      b.className = 'level-btn available'; b.title = 'Уровень ' + i + ' — играть';
+      b.onclick = () => { startLevel(i); };
+    } else {
+      b.className = 'level-btn locked'; b.setAttribute('aria-disabled', 'true');
+      b.title = 'Уровень ' + i + ' — сначала пройдите предыдущий';
+      b.onclick = () => showToast('🔒 Сначала пройдите уровень ' + (i - 1), true);
+    }
+    wrap.appendChild(b);
+  }
+  const done = completed.size;
+  document.getElementById('progressLbl').textContent = done + ' / ' + TOTAL_LEVELS;
+  document.getElementById('progressBar').style.width = (done / TOTAL_LEVELS * 100) + '%';
+}
+
+function shuffledWords(seedRng){
+  const arr=[...WORDS];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(seedRng()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr.slice(0,8);
+}
+
+function generateLevel(level){
+  const rng=mulberry32(level*7919+13);
+  const words=shuffledWords(rng).sort((a,b)=>b.length-a.length);
+  const grid=Array.from({length:10},()=>Array(10).fill(null));
+  const owner=Array.from({length:10},()=>Array(10).fill(-1));
+  const dirsStraight=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
+  const cardinal=[[0,1],[1,0],[0,-1],[-1,0]];
+  const placed=[];
+  words.forEach((word,idx)=>{
+    let ok=false, attempts=0;
+    while(!ok && attempts<800){
+      attempts++;
+      const bend=word.length>=4 && attempts<500 && rng()<0.4;
+      let cells;
+      if(bend){
+        const dir1=cardinal[Math.floor(rng()*4)];
+        const perp=dir1[0]===0?[[1,0],[-1,0]]:[[0,1],[0,-1]];
+        const dir2=perp[Math.floor(rng()*2)];
+        const k=1+Math.floor(rng()*(word.length-2));
+        const r0=Math.floor(rng()*10), c0=Math.floor(rng()*10);
+        cells=[];
+        for(let i=0;i<=k;i++) cells.push([r0+dir1[0]*i, c0+dir1[1]*i]);
+        const bendCell=cells[k];
+        for(let i=1;i<word.length-k;i++) cells.push([bendCell[0]+dir2[0]*i, bendCell[1]+dir2[1]*i]);
+      } else {
+        const dir=dirsStraight[Math.floor(rng()*8)];
+        const r0=Math.floor(rng()*10), c0=Math.floor(rng()*10);
+        cells=[];
+        for(let i=0;i<word.length;i++) cells.push([r0+dir[0]*i, c0+dir[1]*i]);
+      }
+      if(cells.some(([r,c])=>r<0||r>9||c<0||c>9)) continue;
+      const uniq=new Set(cells.map(p=>p[0]+','+p[1]));
+      if(uniq.size!==cells.length) continue;
+      let valid=true;
+      for(const [r,c] of cells){
+        if(owner[r][c]!==-1){valid=false;break;}
+        for(let dr=-1;dr<=1&&valid;dr++)for(let dc=-1;dc<=1;dc++){
+          if(!dr&&!dc) continue;
+          const nr=r+dr, nc=c+dc;
+          if(nr<0||nr>9||nc<0||nc>9) continue;
+          if(owner[nr][nc]!==-1 && !cells.some(p=>p[0]===nr&&p[1]===nc)){valid=false;break;}
+        }
+        if(!valid) break;
+      }
+      if(!valid) continue;
+      cells.forEach((p,i)=>{grid[p[0]][p[1]]=word[i]; owner[p[0]][p[1]]=idx;});
+      placed.push({word,cells}); ok=true;
+    }
+  });
+  for(let r=0;r<10;r++)for(let c=0;c<10;c++) if(grid[r][c]===null) grid[r][c]=ALPHA[Math.floor(rng()*ALPHA.length)];
+  return {grid,placed};
+}
+
+function startLevel(level){
+  if (gameShutdown) return;
+  if (!isLevelUnlocked(level)) { showToast('🔒 Уровень закрыт', true); return; }
+  curLevel=level;
+  const {grid,placed}=generateLevel(level);
+  curGrid=grid; curWords=placed.map(p=>({...p,found:false}));
+  document.getElementById('levelTitle').textContent='Уровень '+level;
+  renderGrid(); renderWordList();
+  show('game');
+}
+
+function renderGrid(){
+  const g=document.getElementById('grid'); g.innerHTML=''; cellEls=[];
+  for(let r=0;r<10;r++){
+    cellEls.push([]);
+    for(let c=0;c<10;c++){
+      const d=document.createElement('div'); d.className='cell'; d.textContent=curGrid[r][c];
+      d.dataset.r=r; d.dataset.c=c;
+      g.appendChild(d); cellEls[r].push(d);
+    }
+  }
+}
+function renderWordList(){
+  const w=document.getElementById('wordList'); w.innerHTML='';
+  curWords.forEach((wd,i)=>{
+    const chip=document.createElement('div'); chip.className='word-chip'+(wd.found?' found':'');
+    chip.textContent=wd.found?wd.word:'•'.repeat(wd.word.length); chip.dataset.idx=i; w.appendChild(chip);
+  });
+}
+
+function clearSelecting(){cellEls.flat().forEach(el=>{if(!el.classList.contains('found')) el.classList.remove('selecting');});}
+function cellFromEvent(x,y){const el=document.elementFromPoint(x,y); if(!el) return null; const c=el.closest('.cell'); if(!c) return null; return {r:+c.dataset.r,c:+c.dataset.c};}
+
+function extendPath(cell){
+  const last=curPath[curPath.length-1];
+  if(!last) return;
+  if(cell.r===last.r && cell.c===last.c) return;
+  if(curPath.length>=2){
+    const prev=curPath[curPath.length-2];
+    if(cell.r===prev.r && cell.c===prev.c){
+      const removed=curPath.pop();
+      cellEls[removed.r][removed.c].classList.remove('selecting');
+      return;
+    }
+  }
+  if(Math.abs(cell.r-last.r)>1 || Math.abs(cell.c-last.c)>1) return;
+  if(curPath.some(p=>p.r===cell.r&&p.c===cell.c)) return;
+  curPath.push(cell);
+  cellEls[cell.r][cell.c].classList.add('selecting');
+}
+function finalizeSelection(){
+  if(curPath.length>1){
+    const str=curPath.map(p=>curGrid[p.r][p.c]).join('');
+    const rev=str.split('').reverse().join('');
+    const match=curWords.find(w=>!w.found && (w.word===str||w.word===rev));
+    if(match){
+      match.found=true;
+      curPath.forEach(p=>{
+        cellEls[p.r][p.c].classList.remove('selecting');
+        cellEls[p.r][p.c].classList.add('found');
+      });
+      playFound(); showToast(PRAISE[Math.floor(Math.random()*PRAISE.length)]);
+      renderWordList();
+      if(curWords.every(w=>w.found)) setTimeout(levelComplete,500);
+    }
+  }
+  clearSelecting(); curPath=[]; startCell=null;
+}
+function showToast(text, isLocked){
+  if (gameShutdown) return;
+  const t=document.getElementById('toast');
+  t.textContent=text; t.classList.toggle('locked', !!isLocked);
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h=setTimeout(()=>t.classList.remove('show'),1500);
+}
+function levelComplete(){
+  if (gameShutdown) return;
+  const wasNew = !completed.has(curLevel);
+  completed.add(curLevel);
+  saveProgress();
+  const allDone = completed.size === TOTAL_LEVELS;
+  const hasNext = curLevel < TOTAL_LEVELS;
+  document.getElementById('ovTitle').textContent = allDone ? '🌟 Игра пройдена!' : 'Уровень пройден!';
+  document.getElementById('overlayText').textContent = allDone
+    ? 'Вы прошли все 10 уровней природы! Прогресс сохранён.'
+    : 'Все слова найдены на уровне ' + curLevel + '! Прогресс сохранён.';
+  document.getElementById('btnNextLevel').style.display = hasNext ? 'flex' : 'none';
+  document.getElementById('overlay').classList.add('show');
+  if(wasNew && allDone) playFound();
+}
+
+/* ============================================================
+   УКАЗАТЕЛЬ
+   ============================================================ */
+const gridEl = document.getElementById('grid');
+
+gridEl.addEventListener('pointerdown', e=>{
+  if (gameShutdown) return;
+  const c = e.target.closest('.cell'); if(!c) return;
+  e.preventDefault();
+  dragging = true; pointerId = e.pointerId;
+  try { gridEl.setPointerCapture(e.pointerId); } catch(_) {}
+  clearSelecting();
+  curPath=[{r:+c.dataset.r, c:+c.dataset.c}];
+  c.classList.add('selecting');
+}, { passive: false });
+
+gridEl.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  if(pointerId !== null && e.pointerId !== pointerId) return;
+  e.preventDefault();
+  const cell = cellFromEvent(e.clientX, e.clientY);
+  if(cell) extendPath(cell);
+}, { passive: false });
+
+function endPointer(e){
+  if(!dragging) return;
+  if(pointerId !== null && e && e.pointerId !== pointerId) return;
+  dragging = false; pointerId = null;
+  finalizeSelection();
+}
+gridEl.addEventListener('pointerup', endPointer);
+gridEl.addEventListener('pointercancel', endPointer);
+gridEl.addEventListener('lostpointercapture', endPointer);
+gridEl.addEventListener('touchstart', e=>{ if(e.cancelable) e.preventDefault(); }, { passive: false });
+gridEl.addEventListener('touchmove', e=>{ if(e.cancelable) e.preventDefault(); }, { passive: false });
+
+/* ============================================================
+   🎵 АУДИО
+   ============================================================ */
+let musicMode = 'synth';
+const MUSIC_START_AT = Math.max(0, Number(ASSETS.themeStart) || 0);
+
+function playCustomMusic(){
+  if (!customAudioEl) return;
+  if (!musicOn || gameShutdown) return;
+  if (customAudioEl.currentTime < MUSIC_START_AT) {
+    try { customAudioEl.currentTime = MUSIC_START_AT; } catch(e){}
+  }
+  const p = customAudioEl.play();
+  if (p && p.catch) p.catch(()=>{});
+}
+function pauseCustomMusic(){
+  if (!customAudioEl) return;
+  try { customAudioEl.pause(); } catch(e){}
+}
+
+(function tryLoadCustomMusic(){
+  if (!ASSETS.theme) return;
+  const test = new Audio();
+  test.preload = 'auto';
+  test.addEventListener('canplay', () => {
+    musicMode = 'custom';
+    customAudioEl = new Audio(ASSETS.theme);
+    customAudioEl.loop = false;
+    customAudioEl.volume = 0.6;
+    customAudioEl.preload = 'auto';
+
+    customAudioEl.addEventListener('loadedmetadata', () => {
+      try { customAudioEl.currentTime = MUSIC_START_AT; } catch(e){}
+    }, { once: true });
+
+    customAudioEl.addEventListener('timeupdate', () => {
+      if (!customAudioEl.duration) return;
+      if (customAudioEl.currentTime >= customAudioEl.duration - 0.15) {
+        try { customAudioEl.currentTime = MUSIC_START_AT; } catch(e){}
+      }
+    });
+
+    if (actx && musicOn && !gameShutdown) playCustomMusic();
+  }, { once: true });
+  test.addEventListener('error', () => {
+    console.info('Своя музыка не найдена:', ASSETS.theme, '— использую синтезированную.');
+  }, { once: true });
+  test.src = ASSETS.theme;
+  test.load();
+})();
+
+function ensureAudio(){
+  if (gameShutdown) return;
+  if(actx) {
+    if(actx.state === 'suspended') actx.resume();
+    if (musicMode === 'custom' && musicOn) playCustomMusic();
+    return;
+  }
+  actx = new (window.AudioContext || window.webkitAudioContext)();
+  musicGain = actx.createGain(); musicGain.gain.value = musicOn ? 0.12 : 0; musicGain.connect(actx.destination);
+  sfxGain = actx.createGain(); sfxGain.gain.value = 1; sfxGain.connect(actx.destination);
+  if (musicMode === 'custom' && customAudioEl) {
+    if (musicOn) playCustomMusic();
+  } else {
+    startMusic();
+  }
+}
+
+function startMusic(){
+  if (musicMode === 'custom' || gameShutdown) return;
+  const notes=[196.00,246.94,293.66];
+  notes.forEach((f,i)=>{
+    const o=actx.createOscillator(); o.type='sine'; o.frequency.value=f;
+    const g=actx.createGain(); g.gain.value=0.22;
+    const lfo=actx.createOscillator(); lfo.frequency.value=0.09+i*0.03;
+    const lfoGain=actx.createGain(); lfoGain.gain.value=0.08;
+    lfo.connect(lfoGain); lfoGain.connect(g.gain);
+    o.connect(g); g.connect(musicGain); o.start(); lfo.start();
+    musicNodes.push(o,lfo);
+  });
+  scheduleBird();
+}
+function scheduleBird(){
+  if (musicMode === 'custom') return;
+  birdTimer=setInterval(()=>{
+    if(!musicOn||!actx||gameShutdown) return;
+    const o=actx.createOscillator(); o.type='sine';
+    const g=actx.createGain(); g.gain.value=0.0001;
+    o.connect(g); g.connect(musicGain);
+    const t=actx.currentTime, base=1700+Math.random()*900;
+    o.frequency.setValueAtTime(base,t);
+    o.frequency.exponentialRampToValueAtTime(base*1.4,t+0.08);
+    o.frequency.exponentialRampToValueAtTime(base*0.9,t+0.16);
+    g.gain.exponentialRampToValueAtTime(0.05,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+    o.start(t); o.stop(t+0.24);
+  },2400+Math.random()*2600);
+}
+
+function playClick(){
+  if(!soundOn||!actx||gameShutdown) return;
+  const o=actx.createOscillator(); o.type='triangle';
+  const g=actx.createGain(); g.gain.value=0.14; o.connect(g); g.connect(sfxGain);
+  const t=actx.currentTime;
+  o.frequency.setValueAtTime(440,t); o.frequency.exponentialRampToValueAtTime(660,t+0.08);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+  o.start(t); o.stop(t+0.13);
+}
+function playFound(){
+  if(!soundOn||!actx||gameShutdown) return;
+  [523.25,659.25,783.99].forEach((f,i)=>{
+    const o=actx.createOscillator(); o.type='sine'; const g=actx.createGain();
+    o.connect(g); g.connect(sfxGain);
+    const t=actx.currentTime+i*0.09;
+    g.gain.setValueAtTime(0.0001,t); o.frequency.setValueAtTime(f,t);
+    g.gain.exponentialRampToValueAtTime(0.22,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);
+    o.start(t); o.stop(t+0.32);
+  });
+}
+function updateToggleUI(){
+  const mIcon = musicOn ? '🔊' : '🔇';
+  const sIcon = soundOn ? '🔔' : '🔕';
+  document.getElementById('musicToggle').textContent = musicOn ? 'Вкл' : 'Выкл';
+  document.getElementById('soundToggle').textContent = soundOn ? 'Вкл' : 'Выкл';
+  document.getElementById('musicToggleGame').textContent = mIcon;
+  document.getElementById('soundToggleGame').textContent = sIcon;
+}
+function toggleMusic(){
+  musicOn = !musicOn;
+  if(musicGain) musicGain.gain.value = musicOn ? 0.12 : 0;
+  if (musicMode === 'custom' && customAudioEl) {
+    if (musicOn) playCustomMusic();
+    else pauseCustomMusic();
+  }
+  updateToggleUI(); saveProgress();
+}
+function toggleSound(){
+  soundOn = !soundOn;
+  updateToggleUI(); saveProgress();
+}
+function updateHintUI(){
+  document.getElementById('hintBadge').textContent = hintsLeft;
+  document.getElementById('btnHint').disabled = hintsLeft <= 0;
+}
+function useHint(){
+  if(hintsLeft<=0 || gameShutdown) return;
+  const unfound = curWords.filter(w=>!w.found);
+  if(!unfound.length) return;
+  const w = unfound[Math.floor(Math.random()*unfound.length)];
+  const [r,c] = w.cells[0];
+  const el = cellEls[r][c];
+  el.classList.add('hint');
+  setTimeout(()=>el.classList.remove('hint'), 1500);
+  hintsLeft--; updateHintUI(); saveProgress();
+}
+
+/* ============================================================
+   🚪 ВЫХОД
+   ============================================================ */
+function exitGame(){
+  saveProgress();
+  gameShutdown = true;
+  try { pauseCustomMusic(); if (customAudioEl) customAudioEl.currentTime = 0; } catch(e){}
+  try { if (birdTimer) clearInterval(birdTimer); } catch(e){}
+  try { if (musicGain) musicGain.gain.value = 0; } catch(e){}
+  try { if (sfxGain) sfxGain.gain.value = 0; } catch(e){}
+  try { musicNodes.forEach(n => { try { n.stop(); } catch(_){} }); } catch(e){}
+  try { if (actx) actx.close(); } catch(e){}
+  actx = null;
+
+  document.querySelectorAll('audio,video').forEach(m => { try { m.pause(); } catch(e){} });
+  try { document.getElementById('overlay').classList.remove('show'); } catch(e){}
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+  try {
+    window.open('', '_self', '');
+    window.close();
+  } catch(e){}
+
+  setTimeout(() => {
+    if (!document.hidden) {
+      document.getElementById('shutdown').classList.add('show');
+    }
+  }, 220);
+}
+
+document.getElementById('btnReopen').onclick = () => { location.reload(); };
+
+/* ============================================================
+   ОБРАБОТЧИКИ
+   ============================================================ */
+document.querySelectorAll('button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    if (gameShutdown) return;
+    if (b.id === 'btnExit') return;
+    ensureAudio(); playClick();
+  });
+});
+document.getElementById('btnPlay').onclick=()=>{
+  const next = nextPlayableLevel();
+  if(next === null){ buildLevelGrid(); show('levels'); }
+  else { startLevel(next); }
+};
+document.getElementById('btnLevels').onclick=()=>{ buildLevelGrid(); show('levels'); };
+document.getElementById('backFromLevels').onclick=()=>show('menu');
+document.getElementById('btnSettings').onclick=()=>show('settings');
+document.getElementById('backFromSettings').onclick=()=>show('menu');
+document.getElementById('btnBackGame').onclick=()=>{ buildLevelGrid(); show('levels'); };
+document.getElementById('musicToggle').onclick=toggleMusic;
+document.getElementById('soundToggle').onclick=toggleSound;
+document.getElementById('musicToggleGame').onclick=toggleMusic;
+document.getElementById('soundToggleGame').onclick=toggleSound;
+document.getElementById('btnHint').onclick=useHint;
+document.getElementById('btnReset').onclick=resetProgress;
+document.getElementById('btnNextLevel').onclick=()=>{
+  document.getElementById('overlay').classList.remove('show');
+  const next = curLevel + 1;
+  if (next <= TOTAL_LEVELS && isLevelUnlocked(next)) startLevel(next);
+  else { buildLevelGrid(); show('levels'); }
+};
+document.getElementById('btnToLevels').onclick=()=>{
+  document.getElementById('overlay').classList.remove('show');
+  buildLevelGrid(); show('levels');
+};
+document.getElementById('btnExit').onclick = () => { exitGame(); };
+
+/* ============================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ============================================================ */
+loadProgress();
+updateToggleUI();
+updateHintUI();
+buildLevelGrid();
+
+(function welcomeBack(){
+  const next = nextPlayableLevel();
+  if (completed.size > 0 && next !== null) {
+    setTimeout(()=>showToast('С возвращением! Продолжаем с уровня ' + next), 600);
+  } else if (completed.size === TOTAL_LEVELS) {
+    setTimeout(()=>showToast('🌟 Все 10 уровней пройдены — вы мастер!'), 600);
+  }
+})();
+
+window.addEventListener('beforeunload', saveProgress);
+window.addEventListener('pagehide', saveProgress);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    saveProgress();
+    pauseCustomMusic();
+  } else if (!gameShutdown) {
+    if (musicMode === 'custom' && musicOn) playCustomMusic();
+  }
+});
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e)=>{
+  const now = Date.now();
+  if (now - lastTouchEnd < 300) e.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
+</script>
+</body>
+</html>
