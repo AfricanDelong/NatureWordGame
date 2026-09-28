@@ -258,6 +258,7 @@ h2{font-size:clamp(1rem, 4vw, 1.5rem);}
   transition: transform .08s, box-shadow .08s, filter .15s;
   padding: 0 0 2px 0;
 }
+body:not(.game-active) .help-fab{ display:none; }
 .help-fab:hover{ filter: brightness(1.1); }
 .help-fab:active{
   transform: translateY(3px);
@@ -709,13 +710,13 @@ h2{font-size:clamp(1rem, 4vw, 1.5rem);}
   <button class="btn" id="btnPlay">▶ Играть</button>
   <button class="btn" id="btnLevels">📋 Уровни</button>
   <button class="btn" id="btnSettings">⚙ Настройки</button>
-  <button class="btn" id="btnExit">✕ Выход</button>
+  <button class="btn" id="btnRules">❓ Правила</button>
 </div>
 
 <div class="screen" id="levels">
   <h2>Выберите уровень</h2>
   <div class="progress-banner">
-    <span class="lbl" id="progressLbl">0 / 10</span>
+    <span class="lbl" id="progressLbl">0 / 50</span>
     <div class="bar"><i id="progressBar" style="width:0%"></i></div>
   </div>
   <div class="level-grid" id="levelGrid"></div>
@@ -765,7 +766,7 @@ h2{font-size:clamp(1rem, 4vw, 1.5rem);}
 <div class="overlay" id="rulesOverlay"><div class="box rules-box">
   <h2>📖 Как играть</h2>
   <p>🔎 На сетке 10×10 спрятано минимум 8 слов о природе на каждом уровне.</p>
-  <p>👆 Проведите пальцем или мышью по буквам от начала до конца слова. Слова идут по горизонтали, вертикали, диагонали, а некоторые изгибаются буквой «Г».</p>
+  <p>👆 Проведите пальцем или мышью по буквам от начала до конца слова. Слова идут только по горизонтали и вертикали, а некоторые изгибаются один раз буквой «Г». Диагонали, квадраты и зигзаги выделять нельзя.</p>
   <p>🚫 Слова никогда не соприкасаются друг с другом — между ними минимум одна пустая буква.</p>
   <p>🙈 Список слов внизу спрятан точками — буквы откроются, когда найдёте слово.</p>
   <p>💡 Лампочка-подсказка подсветит первую букву случайного слова (запас общий на игру).</p>
@@ -915,7 +916,7 @@ function resetProgress(){
 const WORDS=['ЛЕС','РЕКА','ГОРЫ','ОБЛАКО','СОЛНЦЕ','ДЕРЕВО','ЦВЕТОК','ТРАВА','ЛИСТ','ОЗЕРО','ВЕТЕР','ДОЖДЬ','ПТИЦА','РОСА','ЗАКАТ','ПОЛЕ','ОКЕАН','СНЕГ','ЛУНА','ЗВЕЗДА','КАМЕНЬ','ПЕСОК','ОСТРОВ','РАДУГА','ВОЛНА','ГРИБ','ЯГОДА','КОРА','ВЕТКА','РУЧЕЙ'];
 const PRAISE=['Великолепно!','Чудесно!','Отлично!','Прекрасно!','Ты молодец!','Восхитительно!','Замечательно!','Супер!'];
 const ALPHA='АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ';
-const TOTAL_LEVELS=10;
+const TOTAL_LEVELS=50;
 const BONUS_REWARD_EVERY=3;
 
 let actx,musicGain,sfxGain,musicNodes=[],birdTimer;
@@ -931,6 +932,7 @@ function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.body.classList.toggle('menu-active', id === 'menu');
+  document.body.classList.toggle('game-active', id === 'game');
 }
 function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 
@@ -971,12 +973,12 @@ function shuffledWords(seedRng){
   return arr.slice(0,8);
 }
 
-function generateLevel(level){
-  const rng=mulberry32(level*7919+13);
+function generateLevelOnce(level,salt){
+  const rng=mulberry32(level*7919+13+salt*104729);
   const words=shuffledWords(rng).sort((a,b)=>b.length-a.length);
   const grid=Array.from({length:10},()=>Array(10).fill(null));
   const owner=Array.from({length:10},()=>Array(10).fill(-1));
-  const dirsStraight=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
+  const dirsStraight=[[0,1],[1,0],[0,-1],[-1,0]];
   const cardinal=[[0,1],[1,0],[0,-1],[-1,0]];
   const placed=[];
   words.forEach((word,idx)=>{
@@ -996,7 +998,7 @@ function generateLevel(level){
         const bendCell=cells[k];
         for(let i=1;i<word.length-k;i++) cells.push([bendCell[0]+dir2[0]*i, bendCell[1]+dir2[1]*i]);
       } else {
-        const dir=dirsStraight[Math.floor(rng()*8)];
+        const dir=dirsStraight[Math.floor(rng()*4)];
         const r0=Math.floor(rng()*10), c0=Math.floor(rng()*10);
         cells=[];
         for(let i=0;i<word.length;i++) cells.push([r0+dir[0]*i, c0+dir[1]*i]);
@@ -1024,11 +1026,21 @@ function generateLevel(level){
   return {grid,placed};
 }
 
+function generateLevel(level){
+  let best=null;
+  for(let salt=0;salt<300;salt++){
+    const res=generateLevelOnce(level,salt);
+    if(!best||res.placed.length>best.placed.length) best=res;
+    if(res.placed.length>=8) return res;
+  }
+  return best;
+}
+
 /* ============================================================
    🔍 СКАНИРОВАНИЕ ПОЛЯ НА БОНУСНЫЕ СЛОВА
    ============================================================
    Проходит по всем клеткам и проверяет все возможные пути:
-   • прямые — во всех 8 направлениях длиной 3…7
+   • прямые — по горизонтали и вертикали длиной 3…7
    • буквой «Г» — с одним поворотом на 90°
    Возвращает Set из всех найденных в словаре слов.
    Основные 8 слов уровня исключаются.
@@ -1037,11 +1049,11 @@ function scanGridForBonuses(grid, mainWords){
   const found = new Set();
   const MIN_LEN = 3;
   const MAX_LEN = 7;
-  const dirsAll = [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
+  const dirsAll = [[0,1],[0,-1],[1,0],[-1,0]];
   const cardinals = [[0,1],[1,0],[0,-1],[-1,0]];
   const mainSet = new Set(mainWords);
 
-  // Прямые во всех 8 направлениях
+  // Прямые: только горизонталь и вертикаль
   for (let r = 0; r < 10; r++){
     for (let c = 0; c < 10; c++){
       for (const [dr, dc] of dirsAll){
@@ -1140,6 +1152,15 @@ function renderBonusList(){
 function clearSelecting(){cellEls.flat().forEach(el=>{if(!el.classList.contains('found')) el.classList.remove('selecting');});}
 function cellFromEvent(x,y){const el=document.elementFromPoint(x,y); if(!el) return null; const c=el.closest('.cell'); if(!c) return null; return {r:+c.dataset.r,c:+c.dataset.c};}
 
+function pathTurns(path){
+  let turns=0, pd=null;
+  for(let i=1;i<path.length;i++){
+    const d=[path[i].r-path[i-1].r, path[i].c-path[i-1].c];
+    if(pd && (d[0]!==pd[0]||d[1]!==pd[1])) turns++;
+    pd=d;
+  }
+  return turns;
+}
 function extendPath(cell){
   const last=curPath[curPath.length-1];
   if(!last) return;
@@ -1152,8 +1173,11 @@ function extendPath(cell){
       return;
     }
   }
-  if(Math.abs(cell.r-last.r)>1 || Math.abs(cell.c-last.c)>1) return;
+  // только шаг по горизонтали или вертикали (без диагоналей)
+  if(Math.abs(cell.r-last.r)+Math.abs(cell.c-last.c)!==1) return;
   if(curPath.some(p=>p.r===cell.r&&p.c===cell.c)) return;
+  // не больше одного поворота на 90° (только прямая или «Г»)
+  if(pathTurns(curPath.concat([cell]))>1) return;
   curPath.push(cell);
   cellEls[cell.r][cell.c].classList.add('selecting');
 }
@@ -1163,7 +1187,17 @@ function finalizeSelection(){
     const pathSnapshot = curPath.map(p => ({r:p.r, c:p.c}));
     const str = pathSnapshot.map(p => curGrid[p.r][p.c]).join('');
     const rev = str.split('').reverse().join('');
-    const match = curWords.find(w => !w.found && (w.word === str || w.word === rev));
+    // Сначала читаем слово в том направлении, в котором тянули (ЛОХ ≠ ХОЛ),
+    // и только если так слова нет — пробуем прочитать наоборот.
+    let match = curWords.find(w => !w.found && w.word === str);
+    let bonusHit = null;
+    if(!match){
+      if(curBonusPool.has(str) && str.length >= 3) bonusHit = str;
+      else {
+        match = curWords.find(w => !w.found && w.word === rev);
+        if(!match && curBonusPool.has(rev) && rev.length >= 3) bonusHit = rev;
+      }
+    }
 
     if(match){
       // 🟢 Основное слово — красим зелёным
@@ -1178,10 +1212,6 @@ function finalizeSelection(){
       if(curWords.every(w => w.found)) setTimeout(levelComplete, 500);
     } else {
       // 🎁 Бонусное — проверяем по результатам сканирования поля
-      const bonusHit =
-        (curBonusPool.has(str) && str.length >= 3) ? str :
-        ((curBonusPool.has(rev) && rev.length >= 3) ? rev : null);
-
       if(bonusHit){
         // ВАЖНО: поле НЕ красим. Просто снимаем выделение.
         pathSnapshot.forEach(p => {
@@ -1240,7 +1270,7 @@ function levelComplete(){
   const hasNext = curLevel < TOTAL_LEVELS;
   document.getElementById('ovTitle').textContent = allDone ? '🌟 Игра пройдена!' : 'Уровень пройден!';
   document.getElementById('overlayText').textContent = allDone
-    ? 'Вы прошли все 10 уровней природы! Прогресс сохранён.'
+    ? 'Вы прошли все 50 уровней природы! Прогресс сохранён.'
     : 'Все слова найдены на уровне ' + curLevel + '! Прогресс сохранён.';
   document.getElementById('btnNextLevel').style.display = hasNext ? 'flex' : 'none';
   document.getElementById('overlay').classList.add('show');
@@ -1490,7 +1520,6 @@ document.getElementById('btnReopen').onclick = () => { location.reload(); };
 document.querySelectorAll('button').forEach(b=>{
   b.addEventListener('click', ()=>{
     if (gameShutdown) return;
-    if (b.id === 'btnExit') return;
     ensureAudio(); playClick();
   });
 });
@@ -1520,7 +1549,7 @@ document.getElementById('btnToLevels').onclick=()=>{
   document.getElementById('overlay').classList.remove('show');
   buildLevelGrid(); show('levels');
 };
-document.getElementById('btnExit').onclick = () => { exitGame(); };
+document.getElementById('btnRules').onclick = openRules;
 
 document.getElementById('btnHelpFab').onclick = openRules;
 document.getElementById('btnCloseRules').onclick = closeRules;
@@ -1549,7 +1578,7 @@ buildLevelGrid();
   if (completed.size > 0 && next !== null) {
     setTimeout(()=>showToast('С возвращением! Продолжаем с уровня ' + next), 600);
   } else if (completed.size === TOTAL_LEVELS) {
-    setTimeout(()=>showToast('🌟 Все 10 уровней пройдены — вы мастер!'), 600);
+    setTimeout(()=>showToast('🌟 Все 50 уровней пройдены — вы мастер!'), 600);
   }
 })();
 
