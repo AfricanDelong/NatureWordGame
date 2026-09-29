@@ -418,36 +418,81 @@ body:not(.game-active) .help-fab{ display:none; }
 .bonus-title{font-size:.78rem; font-weight:700; color:var(--leaf-dark); text-align:center; width:100%;}
 
 .side-panel{display:contents;}
+.panel-heading{display:none;}
 
 /* ===== Десктопная (ПК) компоновка игрового экрана: поле слева, слова справа ===== */
 @media (min-width: 820px) and (pointer: fine){
   #game.screen.active{
     display:grid;
-    grid-template-columns: minmax(0,1fr) minmax(230px, 320px);
+    grid-template-columns: minmax(0,1fr) minmax(320px, 460px);
     grid-template-rows: auto 1fr;
     grid-template-areas:
       "header header"
       "grid   words";
-    column-gap:26px; row-gap:16px;
-    width:100%; max-width:1120px; height:100%;
+    column-gap:32px; row-gap:18px;
+    width:100%; max-width:1280px; height:100%;
     align-items:stretch;
   }
   #game .game-header{grid-area:header;}
   #game .grid-wrap{grid-area:grid; min-width:0; min-height:0;}
   #game .side-panel{
-    display:flex !important; flex-direction:column; gap:16px;
-    grid-area:words; min-width:0; min-height:0;
-    align-self:start; max-height:100%; overflow-y:auto;
-    background:var(--card); border-radius:16px; padding:14px;
+    display:flex !important; flex-direction:column; gap:18px;
+    grid-area:words; min-width:0;
+    align-self:center; max-height:92%; overflow-y:auto;
+    background:var(--card); border-radius:20px;
+    padding:24px 22px;
+    box-shadow:
+      0 14px 40px rgba(31,74,48,.15),
+      0 3px 8px rgba(31,74,48,.06);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  #game .panel-heading{
+    display:block;
+    text-align:center;
+    font-family:'Comfortaa',cursive;
+    font-weight:700;
+    color:var(--leaf-dark);
+    font-size:1.05rem;
+    letter-spacing:.5px;
+    padding-bottom:12px;
+    margin-bottom:2px;
+    border-bottom:1px solid rgba(120,140,120,.2);
   }
   #game .word-list{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(88px,1fr));
-    gap:8px; max-height:none; overflow:visible; max-width:none; width:100%;
-    align-content:start; justify-content:stretch;
+    display:flex; flex-wrap:wrap; gap:10px;
+    justify-content:center; align-content:flex-start;
+    max-height:none; overflow:visible; max-width:none; width:100%;
+    padding:0;
   }
-  #game .word-chip{text-align:center; font-size:.85rem; padding:7px 8px;}
-  #game .bonus-section{max-width:none; padding-top:6px; border-top:1px solid rgba(0,0,0,.08);}
-  #game .bonus-title{text-align:left;}
+  #game .word-chip{
+    flex:1 1 120px;
+    min-width:105px;
+    max-width:180px;
+    text-align:center;
+    font-size:1.15rem;
+    padding:14px 14px;
+    border-radius:10px;
+    letter-spacing:1.4px;
+  }
+  #game .word-chip.found{
+    letter-spacing: normal;
+    padding:14px 10px;
+  }
+  #game .bonus-section{
+    max-width:none;
+    padding-top:16px;
+    gap:12px;
+    border-top:1px solid rgba(120,140,120,.2);
+  }
+  #game .bonus-section .word-list{
+    gap:10px;
+  }
+  #game .bonus-title{
+    text-align:center;
+    font-size:1rem;
+    letter-spacing:.4px;
+  }
 }
 .bonus-section .word-list .word-chip{background:var(--bonus); color:#fff; letter-spacing:normal;}
 
@@ -628,6 +673,14 @@ body:not(.game-active) .help-fab{ display:none; }
       0 6px 22px rgba(0,0,0,.55),
       0 0 30px rgba(200,255,220,.25);
   }
+  /* Тёмная тема для новой шапки панели и разделителей */
+  #game .panel-heading{
+    color:#eafaf0;
+    border-bottom-color:rgba(200,230,210,.15);
+  }
+  #game .bonus-section{
+    border-top-color:rgba(200,230,210,.15);
+  }
 }
 
 @media (max-width: 768px){
@@ -771,6 +824,7 @@ body:not(.game-active) .help-fab{ display:none; }
     <div class="grid" id="grid"></div>
   </div>
   <div class="side-panel" id="sidePanel">
+    <div class="panel-heading">📍 Слова уровня</div>
     <div class="word-list" id="wordList"></div>
     <div class="bonus-section" id="bonusSection" style="display:none;">
       <div class="bonus-title">🎁 Найдены сверх задания:</div>
