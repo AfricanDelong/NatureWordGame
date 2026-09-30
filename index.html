@@ -171,10 +171,6 @@ h2{
 
 /* ============================================================
    ЗАГОЛОВОК ГЛАВНОГО МЕНЮ
-   ============================================================
-   В одну линию над кнопками. white-space: nowrap не даёт
-   переноситься; размер подобран так, чтобы влезать на самых
-   узких экранах (от 320px).
    ============================================================ */
 #menu h1{
   font-family:'Comfortaa',cursive;
@@ -448,7 +444,7 @@ body:not(.game-active) .help-fab{ display:none; }
   background:#e9f3ec;
   font-weight:800;
   font-size:var(--cell-font, clamp(11px, 3.2vw, 20px));
-  color:#000000;
+  color:#12281a;
   cursor:pointer;
   transition:background .15s, color .15s, transform .1s;
   touch-action:none;
@@ -456,7 +452,6 @@ body:not(.game-active) .help-fab{ display:none; }
   min-width:0; min-height:0; line-height:1;
 }
 .cell.selecting{background:var(--sun); color:#2c2113; transform:scale(1.08); box-shadow:0 0 12px rgba(244,185,66,.7);}
-/* 🟢 Тёмно-зелёный для найденных основных слов на поле */
 .cell.found{
   background:linear-gradient(135deg, var(--found) 0%, var(--found-dark) 100%);
   color:#ffffff;
@@ -487,7 +482,6 @@ body:not(.game-active) .help-fab{ display:none; }
   box-shadow:0 2px 6px rgba(31,74,48,.08);
   border:1px solid rgba(255,255,255,.8);
 }
-/* 🟢 Тёмно-зелёный для найденных ОСНОВНЫХ слов в списке */
 .word-chip.found{
   letter-spacing:normal;
   background:linear-gradient(135deg, var(--found) 0%, var(--found-dark) 100%);
@@ -508,9 +502,6 @@ body:not(.game-active) .help-fab{ display:none; }
   text-shadow:0 1px 2px rgba(255,255,255,.6);
 }
 
-/* ============================================================
-   ДОПОЛНИТЕЛЬНЫЕ СЛОВА — СИНИЙ ФОН (без изменений)
-   ============================================================ */
 .word-chip.bonus,
 .bonus-section .word-list .word-chip,
 .bonus-section .word-list .word-chip.found{
@@ -726,7 +717,6 @@ body:not(.game-active) .help-fab{ display:none; }
     background:rgba(240,248,242,.95);
     border:1px solid rgba(31,74,48,.1);
   }
-  /* 🟢 Тёмно-зелёный для основных найденных слов на ПК */
   #game .word-chip.found{
     letter-spacing: normal;
     padding:16px 12px;
@@ -736,7 +726,6 @@ body:not(.game-active) .help-fab{ display:none; }
     border:1px solid rgba(255,255,255,.18);
     box-shadow: 0 4px 14px rgba(38,102,63,.4), inset 0 1px 0 rgba(255,255,255,.15);
   }
-  /* 🔵 Дополнительные — синие, перебивают всё выше по специфичности */
   #game .bonus-section .word-list .word-chip,
   #game .bonus-section .word-list .word-chip.found{
     background: linear-gradient(135deg, var(--bonus) 0%, var(--bonus-dark) 100%) !important;
@@ -766,21 +755,19 @@ body:not(.game-active) .help-fab{ display:none; }
     text-shadow: 0 2px 10px rgba(0,0,0,.7), 0 0 24px rgba(0,0,0,.35);
   }
   #menu h1{
-  font-family:'Comfortaa',cursive;
-  font-weight:700;
-  font-size:clamp(1rem, 3.8vw, 1.8rem);
-  letter-spacing:0;
-  line-height:1.15;
-  color:#ffffff;
-  margin:.3em 0 .7em;
-  text-align:center;
-  white-space:nowrap;
-  padding:0;
-  max-width:100%;
-  text-shadow:
-    0 2px 6px rgba(0,0,0,.75),
-    0 6px 26px rgba(0,0,0,.55);
-}
+    font-size:clamp(1rem, 3.8vw, 1.8rem);
+    letter-spacing:0;
+    line-height:1.15;
+    color:#ffffff;
+    margin:.3em 0 .7em;
+    text-align:center;
+    white-space:nowrap;
+    padding:0;
+    max-width:100%;
+    text-shadow:
+      0 2px 6px rgba(0,0,0,.75),
+      0 6px 26px rgba(0,0,0,.55);
+  }
   #levelTitle{
     color:#ffffff;
     text-shadow: 0 2px 8px rgba(0,0,0,.7);
@@ -810,7 +797,6 @@ body:not(.game-active) .help-fab{ display:none; }
     -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,.2);
   }
-  /* 🟢 Тёмно-зелёный для основных найденных слов на мобильном */
   .word-chip.found{
     background: linear-gradient(135deg, var(--found) 0%, var(--found-dark) 100%);
     color:#ffffff;
@@ -818,7 +804,6 @@ body:not(.game-active) .help-fab{ display:none; }
     text-shadow: 0 1px 3px rgba(0,0,0,.4);
     box-shadow: 0 3px 10px rgba(38,102,63,.45), inset 0 1px 0 rgba(255,255,255,.15);
   }
-  /* 🔵 Дополнительные — синие */
   .bonus-section .word-list .word-chip,
   .bonus-section .word-list .word-chip.found{
     background: linear-gradient(135deg, var(--bonus) 0%, var(--bonus-dark) 100%) !important;
@@ -885,8 +870,6 @@ body:not(.game-active) .help-fab{ display:none; }
   #levelTitle{ font-size:1.15rem; }
   .level-btn{ min-height:52px; font-size:1.15rem; }
   .level-grid{ gap:6px; }
-  .grid{ padding:5px; gap:1.5px; }
-  .cell{ border-radius:4px; }
   .toast{ font-size:1rem; padding:10px 18px; }
   .hint-badge{ width:22px; height:22px; font-size:.7rem; top:-6px; right:-6px; border-width:2.5px; }
   #menu h1{ font-size:clamp(1.35rem, 6vw, 1.9rem); }
@@ -1018,17 +1001,13 @@ body:not(.game-active) .help-fab{ display:none; }
 }
 
 /* ============================================================
-   МОБИЛЬНАЯ ВЕРСИЯ — дополнительные изменения
-   ПК-версия (min-width: 820px) не затрагивается.
-   ============================================================ */
-/* ============================================================
    МОБИЛЬНОЕ ИГРОВОЕ ПОЛЕ — ВСЕГДА КАК НА ПК
    ============================================================
-   Тёмная тема телефона не влияет на игровое поле.
+   Тёмная тема телефона НЕ влияет на игровое поле.
    Все цвета заданы жёстко — не через CSS-переменные,
    потому что переменные --text-strong, --found, --found-dark,
    --bonus и другие переопределяются внутри
-   @media (prefers-color-scheme: dark) и портят вид поля
+   @media (prefers-color-scheme: dark) и портили вид поля
    на телефонах с тёмной темой.
    ============================================================ */
 @media (max-width: 819px){
@@ -1086,115 +1065,6 @@ body:not(.game-active) .help-fab{ display:none; }
     color:#2c2113 !important;
   }
 }
-
-  /* Зелёные кнопки управления в игре:
-     Назад, Подсказка, Музыка и Звуки. */
-  #btnBackGame,
-  #btnHint,
-  #musicToggleGame,
-  #soundToggleGame{
-    background:linear-gradient(135deg, #3f8f5b 0%, #2f6b45 100%);
-    border-color:#9bd4a8;
-    color:#ffffff;
-    box-shadow:
-      0 5px 0 #1f4a30,
-      0 8px 18px rgba(31,74,48,.30),
-      inset 0 1px 0 rgba(255,255,255,.22);
-    text-shadow:0 2px 4px rgba(0,0,0,.35);
-  }
-
-  #btnBackGame:hover,
-  #btnHint:hover,
-  #musicToggleGame:hover,
-  #soundToggleGame:hover{
-    background:linear-gradient(135deg, #4da76b 0%, #377d50 100%);
-    border-color:#b6e4be;
-    box-shadow:
-      0 6px 0 #1f4a30,
-      0 10px 20px rgba(31,74,48,.34),
-      inset 0 1px 0 rgba(255,255,255,.25);
-  }
-
-  #btnBackGame:active,
-  #btnHint:active,
-  #musicToggleGame:active,
-  #soundToggleGame:active{
-    box-shadow:
-      0 2px 0 #1f4a30,
-      0 4px 10px rgba(31,74,48,.25),
-      inset 0 1px 0 rgba(255,255,255,.18);
-  }
-
-  /* Зелёные кнопки "Назад" в мобильных экранах меню. */
-  #backFromLevels,
-  #backFromSettings,
-  #btnToLevels,
-  #overlay .btn.back,
-  #rulesOverlay .btn.back{
-    background:linear-gradient(135deg, #3f8f5b 0%, #2f6b45 100%);
-    box-shadow:
-      0 6px 0 #1f4a30,
-      0 8px 20px rgba(31,74,48,.28);
-    color:#ffffff;
-  }
-
-  #backFromLevels:active,
-  #backFromSettings:active,
-  #btnToLevels:active,
-  #overlay .btn.back:active,
-  #rulesOverlay .btn.back:active{
-    box-shadow:0 2px 0 #1f4a30;
-  }
-}
-
-
-/* ============================================================
-   МОБИЛЬНОЕ ИГРОВОЕ ПОЛЕ — ТОЧНОЕ ВИЗУАЛЬНОЕ СОПОСТАВЛЕНИЕ С ПК
-   Размер остаётся адаптивным, оформление — как у desktop-поля.
-   ============================================================ */
-@media (max-width: 819px){
-  #game .grid{
-    display:grid;
-    grid-template-columns:repeat(10, 1fr);
-    grid-template-rows:repeat(10, 1fr);
-    gap:2px !important;
-    padding:8px !important;
-    border-radius:16px !important;
-    background:rgba(255,255,255,.92) !important;
-    border:1px solid rgba(255,255,255,.7) !important;
-    box-shadow:0 12px 34px rgba(31,74,48,.15) !important;
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-  }
-
-  #game .grid .cell{
-    border-radius:6px !important;
-    background:#e9f3ec !important;
-    color:var(--text-strong) !important;
-    font-weight:800;
-    line-height:1;
-    box-shadow:none;
-  }
-
-  #game .grid .cell.selecting{
-    background:var(--sun) !important;
-    color:#2c2113 !important;
-    transform:scale(1.08);
-    box-shadow:0 0 12px rgba(244,185,66,.7) !important;
-  }
-
-  #game .grid .cell.found{
-    background:linear-gradient(135deg, var(--found) 0%, var(--found-dark) 100%) !important;
-    color:#ffffff !important;
-    text-shadow:0 1px 3px rgba(0,0,0,.4);
-    box-shadow:0 0 10px rgba(38,102,63,.4), inset 0 1px 0 rgba(255,255,255,.15) !important;
-  }
-
-  #game .grid .cell.wrong{
-    background:var(--wrong) !important;
-    color:#fff !important;
-  }
-}
 </style>
 </head>
 <body class="menu-active">
@@ -1213,7 +1083,7 @@ body:not(.game-active) .help-fab{ display:none; }
 <div id="app">
 
 <div class="screen active" id="menu">
-  <h1>Поиск слов: Природа </h1>
+  <h1>Поиск слов: Природа</h1>
   <button class="btn" id="btnPlay">▶ Играть</button>
   <button class="btn" id="btnLevels">📋 Уровни</button>
   <button class="btn" id="btnSettings">⚙ Настройки</button>
@@ -1400,9 +1270,6 @@ function resetProgress(){
 
 /* ============================================================
    🌿 ПУЛ ОСНОВНЫХ СЛОВ — 120 слов о природе
-   ============================================================
-   Из этого пула на каждом уровне случайно выбирается 8 слов
-   (для 50 уровней используется весь пул в разных комбинациях).
    ============================================================ */
 const WORDS=[
   'ЛЕС','РЕКА','ГОРА','ОБЛАКО','СОЛНЦЕ','ДЕРЕВО','ЦВЕТОК','ТРАВА','ЛИСТ','ОЗЕРО',
