@@ -1035,6 +1035,19 @@ body:not(.game-active) .help-fab{ display:none; }
     text-wrap:balance;
   }
 
+  /* Игровое поле на мобильных сохраняет тот же стиль, что и ПК.
+     На очень узких экранах исходный CSS уменьшает padding/gap/radius —
+     здесь возвращаем ПК-параметры, не меняя адаптивный размер самого поля. */
+  #grid{
+    gap:2px;
+    padding:8px;
+    border-radius:16px;
+  }
+
+  #grid .cell{
+    border-radius:6px;
+  }
+
   /* Зелёные кнопки управления в игре:
      Назад, Подсказка, Музыка и Звуки. */
   #btnBackGame,
