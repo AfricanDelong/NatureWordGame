@@ -1016,6 +1016,85 @@ body:not(.game-active) .help-fab{ display:none; }
   }
   .btn.danger{ box-shadow:0 6px 0 #7a3424; }
 }
+
+/* ============================================================
+   МОБИЛЬНАЯ ВЕРСИЯ — дополнительные изменения
+   ПК-версия (min-width: 820px) не затрагивается.
+   ============================================================ */
+@media (max-width: 819px){
+  /* Главный заголовок мобильного меню:
+     увеличен примерно в 2.5 раза относительно исходного
+     мобильного размера и аккуратно переносится при необходимости. */
+  #menu h1{
+    font-size:clamp(2.2rem, 9vw, 4rem);
+    line-height:1.05;
+    letter-spacing:.01em;
+    white-space:normal;
+    max-width:100%;
+    margin:.15em 0 .65em;
+    text-wrap:balance;
+  }
+
+  /* Зелёные кнопки управления в игре:
+     Назад, Подсказка, Музыка и Звуки. */
+  #btnBackGame,
+  #btnHint,
+  #musicToggleGame,
+  #soundToggleGame{
+    background:linear-gradient(135deg, #3f8f5b 0%, #2f6b45 100%);
+    border-color:#9bd4a8;
+    color:#ffffff;
+    box-shadow:
+      0 5px 0 #1f4a30,
+      0 8px 18px rgba(31,74,48,.30),
+      inset 0 1px 0 rgba(255,255,255,.22);
+    text-shadow:0 2px 4px rgba(0,0,0,.35);
+  }
+
+  #btnBackGame:hover,
+  #btnHint:hover,
+  #musicToggleGame:hover,
+  #soundToggleGame:hover{
+    background:linear-gradient(135deg, #4da76b 0%, #377d50 100%);
+    border-color:#b6e4be;
+    box-shadow:
+      0 6px 0 #1f4a30,
+      0 10px 20px rgba(31,74,48,.34),
+      inset 0 1px 0 rgba(255,255,255,.25);
+  }
+
+  #btnBackGame:active,
+  #btnHint:active,
+  #musicToggleGame:active,
+  #soundToggleGame:active{
+    box-shadow:
+      0 2px 0 #1f4a30,
+      0 4px 10px rgba(31,74,48,.25),
+      inset 0 1px 0 rgba(255,255,255,.18);
+  }
+
+  /* Зелёные кнопки "Назад" в мобильных экранах меню. */
+  #backFromLevels,
+  #backFromSettings,
+  #btnToLevels,
+  #overlay .btn.back,
+  #rulesOverlay .btn.back{
+    background:linear-gradient(135deg, #3f8f5b 0%, #2f6b45 100%);
+    box-shadow:
+      0 6px 0 #1f4a30,
+      0 8px 20px rgba(31,74,48,.28);
+    color:#ffffff;
+  }
+
+  #backFromLevels:active,
+  #backFromSettings:active,
+  #btnToLevels:active,
+  #overlay .btn.back:active,
+  #rulesOverlay .btn.back:active{
+    box-shadow:0 2px 0 #1f4a30;
+  }
+}
+
 </style>
 </head>
 <body class="menu-active">
