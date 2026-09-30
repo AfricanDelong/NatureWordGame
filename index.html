@@ -652,15 +652,7 @@ body:not(.game-active) .help-fab{ display:none; }
 }
 #shutdown button:active{transform:translateY(3px); box-shadow:0 2px 0 #b8892a;}
 
-/* ============================================================
-   ПК + ПЛАНШЕТ — двухколоночная компоновка игрового экрана
-   ============================================================
-   Раньше было: (min-width: 820px) and (pointer: fine)
-   Теперь просто: (min-width: 820px)
-   → планшеты (у которых pointer: coarse) тоже получают
-     двухколоночную ПК-компоновку.
-   ============================================================ */
-@media (min-width: 820px){
+@media (min-width: 820px) and (pointer: fine){
   #game.screen.active{
     display:grid;
     grid-template-columns: minmax(0,1fr) minmax(360px, 480px);
@@ -749,85 +741,6 @@ body:not(.game-active) .help-fab{ display:none; }
     letter-spacing:.03em;
     color:var(--text-strong);
     text-shadow:0 1px 2px rgba(255,255,255,.6);
-  }
-}
-
-@media (max-width: 819px){
-  h1, h2{
-    color:#ffffff;
-    text-shadow: 0 2px 10px rgba(0,0,0,.7), 0 0 24px rgba(0,0,0,.35);
-  }
-  #levelTitle{
-    color:#ffffff;
-    text-shadow: 0 2px 8px rgba(0,0,0,.7);
-  }
-  .progress-banner{
-    background: rgba(20,48,32,.85);
-    color:#ffffff;
-    text-shadow: 0 1px 4px rgba(0,0,0,.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border:1px solid rgba(255,255,255,.15);
-  }
-  .progress-banner .bar{ background: rgba(255,255,255,.2); }
-  .toggle-row{
-    background: rgba(20,48,32,.85);
-    color:#ffffff;
-    text-shadow: 0 1px 4px rgba(0,0,0,.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border:1px solid rgba(255,255,255,.15);
-  }
-  .word-chip{
-    background: rgba(20,48,32,.82);
-    color:#ffffff;
-    text-shadow: 0 1px 4px rgba(0,0,0,.55);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255,255,255,.2);
-  }
-  .word-chip.found{
-    background: linear-gradient(135deg, var(--found) 0%, var(--found-dark) 100%);
-    color:#ffffff;
-    border-color: rgba(255,255,255,.2);
-    text-shadow: 0 1px 3px rgba(0,0,0,.4);
-    box-shadow: 0 3px 10px rgba(38,102,63,.45), inset 0 1px 0 rgba(255,255,255,.15);
-  }
-  .bonus-section .word-list .word-chip,
-  .bonus-section .word-list .word-chip.found{
-    background: linear-gradient(135deg, var(--bonus) 0%, var(--bonus-dark) 100%) !important;
-    color:#ffffff !important;
-    border-color: rgba(255,255,255,.25);
-    text-shadow: 0 1px 3px rgba(0,0,0,.4);
-    box-shadow: 0 3px 10px rgba(42,92,199,.45), inset 0 1px 0 rgba(255,255,255,.2);
-  }
-  .bonus-title{
-    color:#ffffff;
-    text-shadow: 0 1px 4px rgba(0,0,0,.55);
-  }
-  .overlay{ background: rgba(15,36,23,.9); }
-  .overlay .box{
-    background: linear-gradient(160deg, #2f6b45 0%, #1f4a30 100%);
-    color:#ffffff;
-    border: 1.5px solid rgba(255,255,255,.2);
-    box-shadow: 0 22px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.1);
-  }
-  .overlay .box h2{
-    color:#ffffff;
-    text-shadow: 0 2px 10px rgba(0,0,0,.6);
-  }
-  .overlay .box p{ color:#eaf6ea; }
-  .rules-box h2{
-    color:#ffffff;
-    text-shadow: 0 2px 10px rgba(0,0,0,.6);
-  }
-  .rules-box p{
-    color:#f0f8f0;
-    text-shadow: 0 1px 3px rgba(0,0,0,.45);
-  }
-  .overlay .box .btn.back{
-    background: linear-gradient(135deg, #a86a3d, #7a4c22);
-    box-shadow: 0 6px 0 #4e3419;
   }
 }
 
@@ -988,10 +901,92 @@ body:not(.game-active) .help-fab{ display:none; }
 }
 
 /* ============================================================
-   🟢 МОБИЛЬНАЯ ТЕМА — только для экранов ≤ 819px
-   (Планшеты ≥ 820px сюда не попадают — у них ПК-компоновка)
+   📱📱📱 МОБИЛЬНАЯ + ПЛАНШЕТНАЯ ТЕМА
+   ============================================================
+   Применяется на:
+   • все устройства до 1024px по ширине (телефоны и планшеты)
+   • любые устройства с touch-вводом (планшеты в любой ориентации)
+   НЕ применяется на ПК с мышью (там свои правила выше).
    ============================================================ */
-@media (max-width: 819px){
+@media (max-width: 1024px), (pointer: coarse){
+  h1, h2{
+    color:#ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,.7), 0 0 24px rgba(0,0,0,.35);
+  }
+  #levelTitle{
+    color:#ffffff;
+    text-shadow: 0 2px 8px rgba(0,0,0,.7);
+  }
+  .progress-banner{
+    background: rgba(20,48,32,.85);
+    color:#ffffff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border:1px solid rgba(255,255,255,.15);
+  }
+  .progress-banner .bar{ background: rgba(255,255,255,.2); }
+  .toggle-row{
+    background: rgba(20,48,32,.85);
+    color:#ffffff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border:1px solid rgba(255,255,255,.15);
+  }
+  .word-chip{
+    background: rgba(20,48,32,.82);
+    color:#ffffff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .word-chip.found{
+    background: linear-gradient(135deg, var(--found) 0%, var(--found-dark) 100%);
+    color:#ffffff;
+    border-color: rgba(255,255,255,.2);
+    text-shadow: 0 1px 3px rgba(0,0,0,.4);
+    box-shadow: 0 3px 10px rgba(38,102,63,.45), inset 0 1px 0 rgba(255,255,255,.15);
+  }
+  .bonus-section .word-list .word-chip,
+  .bonus-section .word-list .word-chip.found{
+    background: linear-gradient(135deg, var(--bonus) 0%, var(--bonus-dark) 100%) !important;
+    color:#ffffff !important;
+    border-color: rgba(255,255,255,.25);
+    text-shadow: 0 1px 3px rgba(0,0,0,.4);
+    box-shadow: 0 3px 10px rgba(42,92,199,.45), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .bonus-title{
+    color:#ffffff;
+    text-shadow: 0 1px 4px rgba(0,0,0,.55);
+  }
+  .overlay{ background: rgba(15,36,23,.9); }
+  .overlay .box{
+    background: linear-gradient(160deg, #2f6b45 0%, #1f4a30 100%);
+    color:#ffffff;
+    border: 1.5px solid rgba(255,255,255,.2);
+    box-shadow: 0 22px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  .overlay .box h2{
+    color:#ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
+  .overlay .box p{ color:#eaf6ea; }
+  .rules-box h2{
+    color:#ffffff;
+    text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
+  .rules-box p{
+    color:#f0f8f0;
+    text-shadow: 0 1px 3px rgba(0,0,0,.45);
+  }
+  .overlay .box .btn.back{
+    background: linear-gradient(135deg, #a86a3d, #7a4c22);
+    box-shadow: 0 6px 0 #4e3419;
+  }
+
+  /* 🟢 Крупный заголовок главного меню */
   #menu h1{
     font-size:clamp(2.2rem, 9vw, 4rem);
     line-height:1.05;
@@ -1003,6 +998,7 @@ body:not(.game-active) .help-fab{ display:none; }
     padding:0 .15em;
   }
 
+  /* 🟢 Кнопки управления в игре — тёмно-зелёные */
   #btnBackGame,
   #btnHint,
   #musicToggleGame,
@@ -1037,6 +1033,7 @@ body:not(.game-active) .help-fab{ display:none; }
       inset 0 1px 0 rgba(255,255,255,.18);
   }
 
+  /* 🟢 Кнопки «Назад» — тоже зелёные */
   #backFromLevels,
   #backFromSettings,
   #btnToLevels,
@@ -1055,12 +1052,8 @@ body:not(.game-active) .help-fab{ display:none; }
   #rulesOverlay .btn.back:active{
     box-shadow:0 2px 0 #1f4a30;
   }
-}
 
-/* ============================================================
-   🎮 МОБИЛЬНОЕ ИГРОВОЕ ПОЛЕ — фиксированные цвета
-   ============================================================ */
-@media (max-width: 819px){
+  /* 🎮 Игровое поле — фиксированные цвета, не зависит от тёмной темы */
   #game .grid{
     background:rgba(255,255,255,.92) !important;
     border:2px solid #245c38 !important;
@@ -1092,6 +1085,39 @@ body:not(.game-active) .help-fab{ display:none; }
     background:#f4b942 !important;
     color:#2c2113 !important;
   }
+}
+
+/* ============================================================
+   📱 ПЛАНШЕТЫ — дополнительные мелкие настройки
+   ============================================================
+   Только для тач-устройств шириной 700–1024px (планшеты).
+   Отступы чуть больше, чем на телефоне, но всё по-прежнему зелёное.
+   ============================================================ */
+@media (min-width: 700px) and (max-width: 1024px) and (pointer: coarse){
+  #app{ padding:20px; padding-top:calc(20px + var(--sat)); padding-bottom:calc(20px + var(--sab)); }
+  .screen{ max-width:720px; gap:16px; }
+  .btn{ font-size:1.35rem; min-height:70px; padding:20px 34px; max-width:400px; }
+  .icon-btn{ min-width:80px; height:80px; font-size:2.1rem; padding:0 16px; border-radius:18px; }
+  #levelTitle{ font-size:clamp(1.5rem, 3.4vw, 1.9rem); }
+  .level-btn{ min-height:76px; font-size:1.55rem; border-radius:18px; }
+  .level-grid{ gap:12px; }
+  .hint-badge{ width:34px; height:34px; font-size:1rem; top:-10px; right:-10px; border-width:3px; }
+  .word-chip{ font-size:16px; padding:10px 16px; border-radius:12px; }
+  .word-list{ max-height:140px; gap:10px; max-width:720px; }
+  .toast{ font-size:1.2rem; padding:16px 28px; }
+  .progress-banner{ font-size:1.15rem; padding:16px 20px; }
+  .progress-banner .lbl{ font-size:1.2rem; }
+  .toggle-row{ font-size:1.2rem; padding:16px 22px; max-width:400px; }
+  .toggle{ font-size:1.1rem; min-width:110px; min-height:50px; padding:14px 26px; }
+  .rules-box{ padding:32px 28px; max-width:520px; }
+  .rules-box h2{ font-size:1.55rem; }
+  .rules-box p{ font-size:1.15rem; line-height:1.55; }
+  .rules-box .btn{ font-size:1.15rem; min-height:60px; }
+  .overlay .box{ max-width:480px; padding:34px 30px; }
+  .overlay .box h2{ font-size:1.7rem; }
+  .overlay .box p{ font-size:1.2rem; }
+  .help-fab{ width:80px; height:80px; font-size:2.4rem; left:22px; bottom:calc(22px + var(--sab)); }
+  h2{ font-size:clamp(1.4rem, 3vw, 1.8rem); }
 }
 </style>
 </head>
