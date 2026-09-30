@@ -14,11 +14,9 @@
   --sky1:#a7dcc3; --sky2:#eaf6e6; --sky3:#cdebd6; --sky4:#f2f9dc; --sky5:#d8ecf7;
   --leaf:#2f6b45; --leaf-dark:#1f4a30; --leaf-light:#6fae7a;
   --bark:#7a5230; --sun:#f4b942; --card:#ffffffcc; --ink:#1e3325;
-  /* 🟢 Тёмно-зелёный для найденных ОСНОВНЫХ слов */
   --found:#26663f;
   --found-dark:#1a4a2c;
   --wrong:#e0745a;
-  /* 🔵 Синий для ДОПОЛНИТЕЛЬНЫХ слов */
   --bonus:#2a5cc7;
   --bonus-dark:#1e4399;
   --bonus-light:#4a7fd6;
@@ -169,9 +167,6 @@ h2{
   text-shadow:0 1px 2px rgba(255,255,255,.6);
 }
 
-/* ============================================================
-   ЗАГОЛОВОК ГЛАВНОГО МЕНЮ
-   ============================================================ */
 #menu h1{
   font-family:'Comfortaa',cursive;
   font-weight:700;
@@ -754,20 +749,6 @@ body:not(.game-active) .help-fab{ display:none; }
     color:#ffffff;
     text-shadow: 0 2px 10px rgba(0,0,0,.7), 0 0 24px rgba(0,0,0,.35);
   }
-  #menu h1{
-    font-size:clamp(1rem, 3.8vw, 1.8rem);
-    letter-spacing:0;
-    line-height:1.15;
-    color:#ffffff;
-    margin:.3em 0 .7em;
-    text-align:center;
-    white-space:nowrap;
-    padding:0;
-    max-width:100%;
-    text-shadow:
-      0 2px 6px rgba(0,0,0,.75),
-      0 6px 26px rgba(0,0,0,.55);
-  }
   #levelTitle{
     color:#ffffff;
     text-shadow: 0 2px 8px rgba(0,0,0,.7);
@@ -872,7 +853,6 @@ body:not(.game-active) .help-fab{ display:none; }
   .level-grid{ gap:6px; }
   .toast{ font-size:1rem; padding:10px 18px; }
   .hint-badge{ width:22px; height:22px; font-size:.7rem; top:-6px; right:-6px; border-width:2.5px; }
-  #menu h1{ font-size:clamp(1.35rem, 6vw, 1.9rem); }
   h2{ font-size:clamp(1.15rem, 5vw, 1.4rem); }
   .rules-box{ padding:18px 14px; }
   .rules-box h2{ font-size:1.2rem; }
@@ -910,7 +890,6 @@ body:not(.game-active) .help-fab{ display:none; }
   }
   #game .bonus-section{ grid-area:words; align-self:end; }
   h2{font-size:1.15rem;}
-  #menu h1{font-size:1.6rem; margin:.2em 0;}
   .btn{padding:12px 20px; min-height:46px; font-size:1rem;}
   .icon-btn{ min-width:56px; height:56px; font-size:1.5rem; }
   #levelTitle{ font-size:1.2rem; }
@@ -1001,49 +980,103 @@ body:not(.game-active) .help-fab{ display:none; }
 }
 
 /* ============================================================
-   МОБИЛЬНОЕ ИГРОВОЕ ПОЛЕ — ВСЕГДА КАК НА ПК
+   🟢 МОБИЛЬНАЯ ТЕМА — крупный заголовок меню и зелёные кнопки
+   ============================================================
+   • Заголовок главного меню — крупный, красиво переносится
+   • Кнопки в игре (Назад, Подсказка, Музыка, Звуки) — тёмно-зелёные
+   • Кнопки «Назад» на экранах — тоже зелёные
+   ============================================================ */
+@media (max-width: 819px){
+  /* Главный заголовок — крупный, красиво переносится */
+  #menu h1{
+    font-size:clamp(2.2rem, 9vw, 4rem);
+    line-height:1.05;
+    letter-spacing:.01em;
+    white-space:normal;
+    max-width:100%;
+    margin:.15em 0 .65em;
+    text-wrap:balance;
+    padding:0 .15em;
+  }
+
+  /* 🟢 Кнопки управления в игре — тёмно-зелёные */
+  #btnBackGame,
+  #btnHint,
+  #musicToggleGame,
+  #soundToggleGame{
+    background:linear-gradient(135deg, #3f8f5b 0%, #2f6b45 100%);
+    border-color:#9bd4a8;
+    color:#ffffff;
+    box-shadow:
+      0 5px 0 #1f4a30,
+      0 8px 18px rgba(31,74,48,.30),
+      inset 0 1px 0 rgba(255,255,255,.22);
+    text-shadow:0 2px 4px rgba(0,0,0,.35);
+  }
+  #btnBackGame:hover,
+  #btnHint:hover,
+  #musicToggleGame:hover,
+  #soundToggleGame:hover{
+    background:linear-gradient(135deg, #4da76b 0%, #377d50 100%);
+    border-color:#b6e4be;
+    box-shadow:
+      0 6px 0 #1f4a30,
+      0 10px 20px rgba(31,74,48,.34),
+      inset 0 1px 0 rgba(255,255,255,.25);
+  }
+  #btnBackGame:active,
+  #btnHint:active,
+  #musicToggleGame:active,
+  #soundToggleGame:active{
+    box-shadow:
+      0 2px 0 #1f4a30,
+      0 4px 10px rgba(31,74,48,.25),
+      inset 0 1px 0 rgba(255,255,255,.18);
+  }
+
+  /* 🟢 Кнопки «Назад» — тоже зелёные */
+  #backFromLevels,
+  #backFromSettings,
+  #btnToLevels,
+  #overlay .btn.back,
+  #rulesOverlay .btn.back{
+    background:linear-gradient(135deg, #3f8f5b 0%, #2f6b45 100%);
+    box-shadow:
+      0 6px 0 #1f4a30,
+      0 8px 20px rgba(31,74,48,.28);
+    color:#ffffff;
+  }
+  #backFromLevels:active,
+  #backFromSettings:active,
+  #btnToLevels:active,
+  #overlay .btn.back:active,
+  #rulesOverlay .btn.back:active{
+    box-shadow:0 2px 0 #1f4a30;
+  }
+}
+
+/* ============================================================
+   🎮 МОБИЛЬНОЕ ИГРОВОЕ ПОЛЕ — фиксированные цвета
    ============================================================
    Тёмная тема телефона НЕ влияет на игровое поле.
-   Все цвета заданы жёстко — не через CSS-переменные,
-   потому что переменные --text-strong, --found, --found-dark,
-   --bonus и другие переопределяются внутри
-   @media (prefers-color-scheme: dark) и портили вид поля
-   на телефонах с тёмной темой.
+   Все цвета заданы жёстко, без переменных.
    ============================================================ */
 @media (max-width: 819px){
   #game .grid{
-    display:grid;
-    grid-template-columns:repeat(10, 1fr);
-    grid-template-rows:repeat(10, 1fr);
-    gap:2px !important;
-    padding:8px !important;
-    border-radius:16px !important;
     background:rgba(255,255,255,.92) !important;
     border:2px solid #245c38 !important;
     box-shadow:0 12px 34px rgba(31,74,48,.15) !important;
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
   }
-
-  /* Обычная клетка — светлый фон, тёмный текст (как на ПК) */
   #game .grid .cell{
-    border-radius:6px !important;
     background:#e9f3ec !important;
     color:#12281a !important;
-    font-weight:800;
-    line-height:1;
     box-shadow:none !important;
   }
-
-  /* Выделение — янтарный фон, тёмно-коричневый текст */
   #game .grid .cell.selecting{
     background:#f4b942 !important;
     color:#2c2113 !important;
-    transform:scale(1.08);
     box-shadow:0 0 12px rgba(244,185,66,.7) !important;
   }
-
-  /* Найденное основное слово — тёмно-зелёный градиент, белый текст */
   #game .grid .cell.found{
     background:linear-gradient(135deg, #26663f 0%, #1a4a2c 100%) !important;
     color:#ffffff !important;
@@ -1052,14 +1085,10 @@ body:not(.game-active) .help-fab{ display:none; }
       0 0 10px rgba(38,102,63,.4),
       inset 0 1px 0 rgba(255,255,255,.15) !important;
   }
-
-  /* Ошибка — красный фон, белый текст */
   #game .grid .cell.wrong{
     background:#e0745a !important;
     color:#ffffff !important;
   }
-
-  /* Подсказка — янтарная пульсация */
   #game .grid .cell.hint{
     background:#f4b942 !important;
     color:#2c2113 !important;
@@ -1268,9 +1297,6 @@ function resetProgress(){
   }
 })();
 
-/* ============================================================
-   🌿 ПУЛ ОСНОВНЫХ СЛОВ — 120 слов о природе
-   ============================================================ */
 const WORDS=[
   'ЛЕС','РЕКА','ГОРА','ОБЛАКО','СОЛНЦЕ','ДЕРЕВО','ЦВЕТОК','ТРАВА','ЛИСТ','ОЗЕРО',
   'ВЕТЕР','ДОЖДЬ','ПТИЦА','РОСА','ЗАКАТ','ПОЛЕ','ОКЕАН','СНЕГ','ЛУНА','ЗВЕЗДА',
