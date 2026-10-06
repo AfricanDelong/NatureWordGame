@@ -161,7 +161,8 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 
 #levels.screen.active{
   overflow:hidden; height:100%;
-  flex-direction:column; gap:10px; padding-bottom:0;
+  flex-direction:column; gap:10px;
+  padding-bottom:12px;            /* место под тень кнопки «Назад» */
   justify-content:flex-start;
 }
 .levels-sticky{
@@ -170,7 +171,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 }
 .levels-scroll{
   flex:1; min-height:0; overflow-y:auto; overflow-x:hidden;
-  width:100%; padding:4px 4px 8px; -webkit-overflow-scrolling:touch;
+  width:100%; padding:12px 10px 12px; -webkit-overflow-scrolling:touch;  /* поля под звёздочки уровней */
   overscroll-behavior:contain;
 }
 .levels-sticky-bottom{ flex-shrink:0; margin-top:4px; }
@@ -608,7 +609,20 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
     text-shadow: 0 1px 3px rgba(0,0,0,.4);
     box-shadow: 0 3px 10px rgba(42,92,199,.45), inset 0 1px 0 rgba(255,255,255,.2);
   }
-  .bonus-title{ color:#ffffff; text-shadow: 0 1px 4px rgba(0,0,0,.55); }
+  /* белый текст лежит прямо на светлом фоне — добавляем тёмную обводку,
+     иначе «Дополнительные слова» сливаются с фоном.
+     Ширина обводки в em — чтобы она масштабировалась вместе с текстом. */
+  .bonus-title{
+    color:#ffffff;
+    -webkit-text-stroke: 0.09em #1f4a30;
+    paint-order: stroke fill;
+    text-shadow: 0 2px 8px rgba(0,0,0,.5), 0 0 12px rgba(0,0,0,.3);
+  }
+  h2{
+    -webkit-text-stroke: 0.09em #1f4a30;
+    paint-order: stroke fill;
+    text-shadow: 0 2px 8px rgba(0,0,0,.5), 0 0 12px rgba(0,0,0,.3);
+  }
   .overlay{ background: rgba(15,36,23,.9); }
   .overlay .box{
     background: linear-gradient(160deg, #2f6b45 0%, #1f4a30 100%);
