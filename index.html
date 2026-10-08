@@ -11,6 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
+  /* Шрифты. Если Google Fonts недоступен (нет интернета, файл открыт офлайн),
+     браузер уходит в конец списка: раньше там стоял generic-шрифт cursive,
+     а в Windows это Comic Sans MS — игра выглядела чужеродно.
+     Теперь запасной вариант — обычный системный шрифт интерфейса. */
+  --font-display:'Comfortaa','Nunito','Segoe UI',system-ui,sans-serif;
+  --font-ui:'Nunito','Segoe UI',system-ui,sans-serif;
   --sky1:#a7dcc3; --sky2:#eaf6e6; --sky3:#cdebd6; --sky4:#f2f9dc; --sky5:#d8ecf7;
   --leaf:#2f6b45; --leaf-dark:#1f4a30; --leaf-light:#6fae7a;
   --bark:#7a5230; --sun:#f4b942; --card:#ffffffcc; --ink:#1e3325;
@@ -27,7 +33,7 @@
 html,body{height:100%;margin:0;overscroll-behavior:none;overflow-x:hidden;}
 html{-webkit-text-size-adjust:100%; overflow-x:hidden;}
 body{
-  font-family:'Nunito',sans-serif; color:var(--ink);
+  font-family:var(--font-ui); color:var(--ink);
   background:linear-gradient(130deg,
     var(--sky1) 0%, var(--sky3) 15%, var(--sky2) 30%,
     var(--sky4) 45%, var(--sky5) 60%, var(--sky2) 75%,
@@ -48,15 +54,21 @@ body{
   50%{background-position:100% 70%;} 75%{background-position:0% 60%;}
   100%{background-position:0% 50%;}
 }
-body.menu-active::before{
-  content:''; position:fixed; inset:0;
+/* Фон главного экрана — ПОСТОЯННЫЙ слой, а не ::before.
+   Псевдоэлемент создавался и уничтожался при каждом входе в меню и выходе
+   из него, поэтому браузер каждый раз заново обращался к картинке (1.9 МБ)
+   и декодировал её. Постоянный слой держит изображение привязанным к живому
+   элементу: оно грузится один раз за сессию, а меняется только прозрачность. */
+.menu-bg{
+  position:fixed; inset:0;
   background-image: var(--menu-bg-image, none);
   background-size: var(--menu-bg-size, cover);
   background-position: var(--menu-bg-pos, center);
   background-repeat: no-repeat; background-attachment: fixed;
-  opacity: var(--menu-bg-opacity, 0.9);
+  opacity:0;
   z-index: 0; pointer-events: none; transition: opacity .5s;
 }
+body.menu-active .menu-bg{ opacity: var(--menu-bg-opacity, 0.9); }
 body.menu-active::after{
   content:''; position:fixed; inset:0;
   background: linear-gradient(180deg,
@@ -64,7 +76,7 @@ body.menu-active::after{
     rgba(0,0,0,.05) 65%, rgba(255,255,255,.55) 100%);
   z-index: 0; pointer-events: none;
 }
-body.no-menu-bg.menu-active::before,
+body.no-menu-bg .menu-bg,
 body.no-menu-bg.menu-active::after{ display: none; }
 
 .bg-decor{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
@@ -95,11 +107,11 @@ body.no-menu-bg.menu-active::after{ display: none; }
   body{animation:none;}
   .blob,.light-ray,.particle,.leaf,.sun-glow{animation:none !important; opacity:.3;}
 }
-h1,h2{font-family:'Comfortaa',cursive; color:var(--text-strong); margin:.2em 0; position:relative; z-index:1; text-align:center; font-weight:700;}
+h1,h2{font-family:var(--font-display); color:var(--text-strong); margin:.2em 0; position:relative; z-index:1; text-align:center; font-weight:700;}
 h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 1px 2px rgba(255,255,255,.6);}
 
 #menu h1{
-  font-family:'Comfortaa',cursive; font-weight:700;
+  font-family:var(--font-display); font-weight:700;
   font-size:clamp(1.5rem, 6vw, 2.8rem); letter-spacing:.01em; line-height:1.1;
   color:#ffffff; margin:.3em 0 .7em; text-align:center; white-space:nowrap;
   padding:0 .1em;
@@ -122,7 +134,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 #menu{position:relative; padding:20px 10px;}
 
 .btn{
-  font-family:'Comfortaa',cursive; font-size:1.2rem; font-weight:700; color:#ffffff;
+  font-family:var(--font-display); font-size:1.2rem; font-weight:700; color:#ffffff;
   background:linear-gradient(135deg,var(--leaf),var(--leaf-light));
   border:none; border-radius:18px; padding:18px 30px;
   width:100%; max-width:360px; cursor:pointer;
@@ -154,7 +166,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   transition:transform .1s, background .15s, border-color .15s, box-shadow .15s;
   flex-shrink:0; color: var(--text-strong);
   box-shadow:0 4px 10px rgba(31,74,48,.18);
-  font-family: 'Comfortaa', cursive; font-weight: 700; line-height:1;
+  font-family: var(--font-display); font-weight: 700; line-height:1;
 }
 .icon-btn:hover{ background:#ffffff; border-color:var(--leaf-dark); box-shadow:0 6px 14px rgba(31,74,48,.25); }
 .icon-btn:active{transform:scale(.93);}
@@ -180,7 +192,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 .level-btn{
   aspect-ratio:1; min-height:68px;
   border-radius:16px; border:none;
-  font-family:'Comfortaa',cursive; font-weight:700;
+  font-family:var(--font-display); font-weight:700;
   font-size:1.45rem; color:#fff;
   background:linear-gradient(135deg,var(--leaf-light),var(--leaf));
   cursor:pointer; position:relative;
@@ -241,7 +253,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   border:none; background:linear-gradient(135deg,var(--leaf),var(--leaf-light));
   color:#fff; border-radius:12px; padding:12px 22px; font-size:1.05rem;
   cursor:pointer; min-width:100px; min-height:46px;
-  font-family:'Comfortaa',cursive; font-weight:700;
+  font-family:var(--font-display); font-weight:700;
   box-shadow:0 3px 0 var(--leaf-dark);
   text-shadow:0 1px 3px rgba(0,0,0,.3);
   transition:transform .1s, box-shadow .1s;
@@ -254,7 +266,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 }
 .header-toggles{display:flex; gap:10px; align-items:center; flex-shrink:0;}
 #levelTitle{
-  font-family:'Comfortaa',cursive; font-weight:700;
+  font-family:var(--font-display); font-weight:700;
   color:var(--text-strong);
   font-size:clamp(1.55rem, 5.4vw, 2rem);
   white-space:nowrap; flex:1; text-align:center;
@@ -354,7 +366,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   font-size:.9rem; font-weight:800; border-radius:50%;
   width:30px; height:30px; display:flex; align-items:center; justify-content:center;
   border:3px solid #ffffff; box-shadow:0 3px 8px rgba(0,0,0,.3);
-  font-family:'Nunito',sans-serif; line-height:1;
+  font-family:var(--font-ui); line-height:1;
   pointer-events:none;
 }
 .icon-btn:disabled{opacity:.45; cursor:default;}
@@ -362,7 +374,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 .toast{
   position:fixed; top:14%; left:50%; transform:translate(-50%,-20px);
   background:linear-gradient(135deg,#ffd76a,#f4b942); color:#3a2a06;
-  font-family:'Comfortaa',cursive; font-weight:700;
+  font-family:var(--font-display); font-weight:700;
   padding:14px 26px; border-radius:16px;
   opacity:0; transition:all .35s; pointer-events:none; z-index:40;
   font-size:1.15rem; text-align:center; max-width:85vw;
@@ -410,18 +422,18 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   flex-direction:column; align-items:center; justify-content:center;
   gap:20px; padding:24px; text-align:center;
   background:linear-gradient(160deg,#2f6b45 0%,#1f4a30 100%);
-  color:#f5f1e3; font-family:'Comfortaa',cursive;
+  color:#f5f1e3; font-family:var(--font-display);
   animation:fadeIn .4s ease;
 }
 #shutdown.show{display:flex;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 #shutdown .ico{font-size:3.6rem; filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));}
 #shutdown h1{font-weight:700; letter-spacing:.18em; margin:0; color:#f5f1e3; font-size:clamp(1.3rem, 4.5vw, 1.8rem); text-shadow:0 2px 10px rgba(0,0,0,.35);}
-#shutdown p{opacity:.9; letter-spacing:.06em; margin:0; max-width:340px; font-family:'Nunito',sans-serif; font-weight:600; font-size:1.05rem; line-height:1.55;}
+#shutdown p{opacity:.9; letter-spacing:.06em; margin:0; max-width:340px; font-family:var(--font-ui); font-weight:600; font-size:1.05rem; line-height:1.55;}
 #shutdown button{
   margin-top:8px; padding:16px 34px; border:none; border-radius:16px;
   background:#f4b942; color:#3a2a06; font-weight:700; font-size:1.1rem;
-  font-family:'Comfortaa',cursive; letter-spacing:.08em; cursor:pointer;
+  font-family:var(--font-display); letter-spacing:.08em; cursor:pointer;
   box-shadow:0 6px 0 #b8892a; transition:transform .08s, box-shadow .08s;
 }
 #shutdown button:active{transform:translateY(3px); box-shadow:0 2px 0 #b8892a;}
@@ -500,7 +512,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
     border:1px solid rgba(255,255,255,.8);
   }
   #game .panel-heading{
-    display:block; text-align:center; font-family:'Comfortaa',cursive;
+    display:block; text-align:center; font-family:var(--font-display);
     font-weight:700; color:var(--text-strong);
     font-size: clamp(13px, calc(var(--gs, 820px) * 0.0255), 22px);
     letter-spacing:.04em;
@@ -561,7 +573,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 @media (max-width: 819px){
   h1, h2{ color:#ffffff; text-shadow: 0 2px 10px rgba(0,0,0,.7), 0 0 24px rgba(0,0,0,.35); }
   #menu h1{
-    font-family:'Comfortaa',cursive; font-weight:700;
+    font-family:var(--font-display); font-weight:700;
     font-size:clamp(1.7rem, 8.5vw, 2.6rem);
     letter-spacing:0; line-height:1.12;
     color:#ffffff; margin:.25em 0 .6em; text-align:center;
@@ -990,6 +1002,8 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 </style>
 </head>
 <body class="menu-active">
+
+<div class="menu-bg" id="menuBg" aria-hidden="true"></div>
 
 <div class="bg-decor" aria-hidden="true">
   <div class="sun-glow"></div>
